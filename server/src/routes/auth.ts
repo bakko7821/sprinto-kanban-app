@@ -44,7 +44,7 @@ router.post(
 router.post(
   "/login",
   [
-    body("username").isEmail(),
+    body("username").notEmpty(),
     body("password").notEmpty(),
   ],
   async (req: Request, res: Response) => {
@@ -53,18 +53,18 @@ router.post(
     try {
       const user = await User.findOne({ where: { username } });
       if (!user) {
-        res.status(400).json({ message: "Неверный email или пароль" });
+        res.status(400).json({ message: "Неверный username или пароль" });
         return;
       }
 
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
-        res.status(400).json({ message: "Неверный email или пароль" });
+        res.status(400).json({ message: "Неверный username или пароль" });
         return;
       }
 
       const token = jwt.sign(
-        { id: user.id, email: user.email },
+        { id: user.id, email: user.email, username: user.username },
         process.env.JWT_SECRET as string,
         { expiresIn: "7d" }
       );
@@ -92,7 +92,7 @@ router.post(
 router.get("/check", authMiddleware, (req, res) => {
   res.status(200).json({
     ok: true,
-    user: (req as any).user, // данные, которые ты зашил в JWT при логине
+    user: (req as any).user,
   });
 });
 

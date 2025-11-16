@@ -23,3 +23,8 @@
 - Создан кастомный хук **/hooks/useAuthGuard.ts**
 - Созданы страницы в /pages: **/AuthPage.tsx**, **/HomePage.tsx**
 - Созданы компоненты **Login.tsx**, **Register.tsx**, **Recovery.tsx**, **NotFound.tsx**
+
+# commit 1.3.0
+
+- Заполнены и стилизованны компоненты **Login.tsx**, **Register.tsx**, **Recovery.tsx**, **NotFound.tsx**
+- Создана страница **NotFoundPage.tsx**

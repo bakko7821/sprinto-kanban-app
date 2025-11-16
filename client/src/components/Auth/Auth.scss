@@ -1,7 +1,7 @@
 @use '../../styles/variables' as *;
 @use '../../styles/keyframes' as *;
 
-.authPage {
+.authPage, .notFoundPage {
     position: relative;
     overflow: hidden;
     padding: 8px;
@@ -72,5 +72,54 @@
             }
         }
     }
-}
 
+    .loginComponent, .registerComponent, .recoveryComponent {
+        z-index: 999;
+        position: relative;
+        background-color: $background-color;
+        padding: 16px;
+        border-radius: 28px;
+
+        .titleText {
+            width: 100%;
+            text-align: center;
+            text-transform: uppercase;
+            font-weight: 700;
+            font-size: $rem2;
+        }
+
+        .handleSubmitButton {
+            background-color: $main-color;
+            transition: all 0.5s;
+            color: $button-text-color;
+            padding: 8px 16px;
+            width: 100%;
+            border-radius: 12px;
+            font-size: $rem1;
+            line-height: 1.5;
+            font-weight: 500;
+
+            &:hover {
+                background-color: $main-hover-color;
+
+                svg {
+                    transform: rotate(30deg);
+                }
+            }
+        }
+
+        a {
+            width: 100%;
+            text-align: center;
+            color: $main-color;
+            font-size: $rem0_875;
+            line-height: 1.5;
+            transition: all 0.5s;
+
+            &:hover {
+                transform: scale(1.2);
+                color: $main-hover-color;
+            }
+        }
+    }
+}
