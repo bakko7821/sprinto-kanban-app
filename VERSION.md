@@ -17,3 +17,9 @@
 - Созданы компоненты **Header.tsx**, **SearchInput.tsx**
 - Написанны стандартные стили для **index.scss**
 - Написанны стили для **Header.scss**
+
+# commit 1.2.0
+
+- Создан кастомный хук **/hooks/useAuthGuard.ts**
+- Созданы страницы в /pages: **/AuthPage.tsx**, **/HomePage.tsx**
+- Созданы компоненты **Login.tsx**, **Register.tsx**, **Recovery.tsx**, **NotFound.tsx**

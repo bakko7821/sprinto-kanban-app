@@ -50,8 +50,7 @@ $rem2: clamp(1.5rem, 2vh, 2rem);
 
 .flex-column {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
 }
 
 .flex-between {

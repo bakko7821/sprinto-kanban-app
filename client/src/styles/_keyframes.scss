@@ -23,3 +23,15 @@
         transform: rotate(0deg);
     }
 }
+
+@keyframes moveUp {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-60%); } // поднимаем на 80% высоты контейнера
+  100% { transform: translateY(0); }
+}
+
+@keyframes moveDown {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(60%); } // опускаем на 80% высоты контейнера
+  100% { transform: translateY(0); }
+}

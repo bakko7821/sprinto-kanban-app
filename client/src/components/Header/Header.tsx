@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom"
-import { BellIcon, CanbanIcon, HelpIcon, UserFilledIcon } from "../../assets/icons"
+import { BellIcon, KanbanIcon, HelpIcon, UserFilledIcon } from "../../assets/icons"
 import "./Header.scss"
 import { SearchInput } from "./SearchInput"
 
@@ -9,7 +9,7 @@ export const Header = () => {
     return (
         <header className="flex-between">
             <div className="logo flex-center g8" onClick={() => navigate("/")}>
-                <CanbanIcon />
+                <KanbanIcon />
                 <span>Sprinto</span>
             </div>
             <div className="searchBox flex-center g16">

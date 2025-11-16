@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { body, validationResult } from "express-validator";
 import User from "../models/User";
+import authMiddleware from "../middleware/authMiddleware";
 
 const router = express.Router();
 
@@ -87,5 +88,12 @@ router.post(
     }
   }
 );
+
+router.get("/check", authMiddleware, (req, res) => {
+  res.status(200).json({
+    ok: true,
+    user: (req as any).user, // данные, которые ты зашил в JWT при логине
+  });
+});
 
 export default router;
