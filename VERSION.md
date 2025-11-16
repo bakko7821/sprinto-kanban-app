@@ -10,3 +10,10 @@
 - создан **/config/db.ts**
 - создан **/utils/types.ts**
 - создан **/utils/types.ts**
+
+# commit 1.1.0
+
+- Создан и стилизован самый наипиздатейший Header
+- Созданы компоненты **Header.tsx**, **SearchInput.tsx**
+- Написанны стандартные стили для **index.scss**
+- Написанны стили для **Header.scss**

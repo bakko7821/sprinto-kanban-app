@@ -1,0 +1,174 @@
+@use '../../../src/styles/variables' as *;
+@use '../../../src/styles/keyframes' as *;
+
+header {
+    width: 100%;
+    padding: 16px;
+    background-color: $background-second-card-color;
+
+    .logo {
+        cursor: pointer;
+        padding: 8px 16px;
+        border-radius: 12px;
+        transition: all 0.5s;
+
+        svg {
+            width: 24px;
+            height: 24px;
+
+            path {
+                fill: $main-color;
+            }
+        }
+
+        span {
+            display: inline-block;
+            font-size: $rem1_5;
+            line-height: 1.2;
+            color: $text-color;
+            text-transform: uppercase;
+            font-weight: 700;
+
+            background-image: linear-gradient(to right, $main-color 0%, $main-color 100%);
+            background-repeat: no-repeat;
+            background-size: 0% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: background-size 2s;
+        }
+
+        &:hover {
+            background-color: $background-card-hover-color;
+
+            span {
+                background-size: 100% 100%;
+            }
+        }
+    }
+
+    .searchBox {
+        .searchInput {
+            width: 320px;
+            padding: 8px 16px;
+            border-radius: 12px;
+            border: 2px $main-color solid;
+            background-color: transparent;
+
+            &:has(input:focus) {
+                svg {
+                    --angle: 480deg;
+                    animation: rotate 2s infinite;
+                }
+            }
+
+            input {
+                width: 100%;
+                font-size: $rem1;
+                font-weight: 400;
+                line-height: 1.5;
+                color: $text-color;
+            }
+        }
+
+        .createTaskButton {
+            background-color: $main-color;
+            color: $button-text-color;
+            font-size: $rem1;
+            line-height: 1.5;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 12px;
+            border: 2px $main-color solid;
+            transition: all 0.5s;
+
+            &:hover {
+                background-color: $main-hover-color;
+                border: 2px $main-hover-color solid;
+            }
+        }
+    }
+
+    .userNavigate {
+        nav {
+            button {
+                padding: 8px;
+                border-radius: 12px;
+                transition: all 0.5s;
+
+                svg {
+                    width: 16px;
+                    height: 16px;
+
+                    path {
+                        fill: $second-text-color;
+                    }
+                }
+
+                &:hover {
+                    background-color: $background-card-hover-color;
+
+                    svg {
+                        transform: rotate(30deg);
+
+                        path {
+                            fill: $text-color;
+                        }
+                    }
+                }
+            }
+        }
+
+        .userAvatar {
+            cursor: pointer;
+            position: relative;
+            width: 44px;
+            height: 44px;
+            border-radius: 100%;
+            transition: all 0.5s;
+
+            .glow {
+                opacity: 0;
+                transition: opacity 0.5s;
+                position: absolute;
+                z-index: 1;
+                background-color: $main-hover-color;
+                width: 100%;
+                height: 100%;
+                border-radius: 100%;
+                filter: blur(10px);
+            }
+
+            .avatar  {
+                padding: 8px;
+                position: relative;
+                object-fit: cover;
+                border-radius: 100%;
+                width: 100%;
+                height: 100%;
+                z-index: 2;
+                background-color: $main-color;
+                transition: all 0.5s;
+
+                svg {
+                    width: 100%;
+                    height: 100%;
+                    color: $button-text-color;
+                }
+            }
+
+            &:hover {
+                .glow {
+                    opacity: 1;
+                }
+
+                .avatar {
+                    background-color: $main-hover-color;
+
+                    svg {
+                        transform: scale(1.3);
+                    }
+                }
+            }
+        }
+    }
+}

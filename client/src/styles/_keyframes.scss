@@ -1,0 +1,25 @@
+@keyframes fillLogo {
+  from {
+    background-size: 0% 100%;
+  }
+  to {
+    background-size: 100% 100%;
+  }
+}
+
+@keyframes rotate {
+    0% {
+        opacity: 1;
+        transform: rotate(0deg);
+    }
+
+    50% {
+        opacity: 0.5;
+        transform: rotate(var(--angle));
+    }
+
+    100% {
+        opacity: 1;
+        transform: rotate(0deg);
+    }
+}

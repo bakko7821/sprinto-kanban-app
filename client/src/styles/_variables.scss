@@ -1,0 +1,66 @@
+$background-color: #F0F0F0;
+$background-card-color: #E1E1E1;
+$background-second-card-color: #D2D2D2;
+$background-card-hover-color: #C3C3C3;
+$main-color: #0C7B1D;
+$main-hover-color: #459A52;
+$text-color: #1E1E1E;
+$button-text-color: #FFFFFF;
+$second-text-color: #818181;
+$second-text-hover-color: #A6A6A6A6;
+
+:root {
+  --background-color: #{$background-color};
+  --background-card-color: #{$background-card-color};
+  --background-second-card-color: #{$background-second-card-color};
+  --background-card-hover-color: #{$background-card-hover-color};
+  --main-color: #{$main-color};
+  --main-hover-color: #{$main-hover-color};
+  --text-color: #{$text-color};
+  --second-text-color: #{$second-text-color};
+  --second-text-hover-color: #{$second-text-hover-color};
+  --button-text-color: #{$button-text-color};
+}
+
+$background-color: var(--background-color);
+$background-card-color: var(--background-card-color);
+$background-second-card-color: var(--background-second-card-color);
+$background-card-hover-color: var(--background-card-hover-color);
+$main-color: var(--main-color);
+$main-hover-color: var(--main-hover-color);
+$text-color: var(--text-color);
+$second-text-color: var(--second-text-color);
+$second-text-hover-color: var(--second-text-hover-color);
+$button-text-color: var(--button-text-color);
+
+$rem0_875: clamp(0.6rem, 2vh, 0.875rem);
+$rem1: clamp(0.8rem, 2vh, 1rem);
+$rem1_5: clamp(1rem, 2vh, 1.5rem);
+$rem2: clamp(1.5rem, 2vh, 2rem);
+
+.flex {
+    display: flex;
+}
+
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-column {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+}
+
+@for $i from 1 through 100 {
+  .g#{$i} {
+    gap: #{$i}px;
+  }
+}

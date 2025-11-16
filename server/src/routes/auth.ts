@@ -20,7 +20,7 @@ router.post(
       return;
     }
 
-    const { firstname, lastname, username, email, password } = req.body;
+    const { username, email, password } = req.body;
 
     try {
       const existingUser = await User.findOne({ where: { email } });
@@ -30,7 +30,7 @@ router.post(
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
-      const newUser = await User.create({ firstname, lastname, username, email, password: hashedPassword });
+      const newUser = await User.create({ username, email, password: hashedPassword });
 
       res.status(201).json({ message: "Пользователь создан", user: newUser });
     } catch (error) {

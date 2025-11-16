@@ -1,0 +1,77 @@
+@use './variables' as *;
+
+@font-face {
+    font-family: BasisGrotesquePro;
+    font-weight: 300;
+    src: url(../assets/fonts/BasisGrotesquePro-Light.ttf);
+}
+
+@font-face {
+    font-family: BasisGrotesquePro;
+    font-weight: 400;
+    src: url(../assets/fonts/BasisGrotesquePro-Regular.ttf);
+}
+
+@font-face {
+    font-family: BasisGrotesquePro;
+    font-weight: 500;
+    src: url(../assets/fonts/BasisGrotesquePro-Medium.ttf);
+}
+
+@font-face {
+    font-family: BasisGrotesquePro;
+    font-weight: 700;
+    src: url(../assets/fonts/BasisGrotesquePro-Bold.ttf);
+}
+
+@font-face {
+    font-family: BasisGrotesquePro;
+    font-weight: 900;
+    src: url(../assets/fonts/BasisGrotesquePro-Black.ttf);
+}
+
+@font-face {
+    font-family: Recoleta;
+    font-weight: 400;
+    src: url(../src/assets/fonts/Recoleta.otf);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: BasisGrotesquePro, sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    width: 100vw;
+    min-height: 100vh;
+    background-color: $background-color;
+}
+
+svg {
+    transition: all 0.5s;
+    width: 24px;
+    height: 24px;
+}
+
+button {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+input {
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
