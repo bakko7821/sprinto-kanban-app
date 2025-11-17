@@ -6,8 +6,15 @@ export interface User {
     subscribe: boolean;
     online: boolean;
     canvas: Board[];
+    notifications:Notification[]; 
     teams: any;
     createdAt: string;
+}
+
+export interface Notification {
+    id: number;
+    read: boolean;
+    content: string;
 }
 
 export interface Board {

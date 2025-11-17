@@ -2,6 +2,7 @@
 @use '../../../src/styles/keyframes' as *;
 
 header {
+    position: relative;
     width: 100%;
     padding: 16px;
     background-color: $background-second-card-color;
@@ -170,5 +171,79 @@ header {
                 }
             }
         }
+    }
+
+    .dropDownMenuUser, .dropDownMenuNotification, .dropDownMenuHelp {
+        padding: 8px;
+        top: 100%;
+        right: 16px;
+        border-radius: 0px 0px 20px 20px;
+        position: absolute;
+        background-color: $background-second-card-color;
+
+        .headingText {
+            padding: 0px 8px;
+            font-size: $rem0_875;
+            color: $second-text-color;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .plug {
+            width: 100%;
+            height: 1px;
+            background-color: $second-text-color;
+        }
+
+        .userInfoBox {
+            padding: 0px 8px;
+
+            .username {
+                font-size: $rem1;
+                color: $text-color;
+                font-weight: 500;
+            }
+
+            .email {
+                color: $text-color;
+                font-size: $rem0_875;
+                font-weight: 400;
+                color: $second-text-color;
+            }
+        }
+
+        .buttonsBox {
+            button {
+                font-size: $rem0_875;
+                color: $text-color;
+                font-weight: 500;
+                width: 100%;
+                text-align: start;
+                padding: 8px;
+                border-radius: 12px;
+                background-color: transparent;
+                transition: all 0.5s;
+
+                &:hover {
+                    background-color: $background-card-hover-color;
+                }
+            }
+
+            #logOut {
+                color: #A80303;
+
+                &:hover {
+                    background-color: #D49F9F;
+                }
+            }
+        }
+    }
+}
+
+header.logOut {
+    background-color: $background-color;
+
+    .logo, .searchBox, .userNavigate, .dropDownMenuUser, .dropDownMenuNotification, .dropDownMenuHelp {
+        animation: hiddenElement 2s ease-in-out;
     }
 }

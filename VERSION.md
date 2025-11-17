@@ -39,3 +39,10 @@
 ### Клиентская част
 
 - Создан скелет для **DropDownMenuUser.tsx**
+
+# commit 2.5.0
+
+- Стилизованн компонент **DropDownMenuUser.tsx**
+- Добавленна возможность выхода из аккаунта
+- Созданы компоненты: **DropDownMenuNotification.tsx**, **DropDownMenuHelp.tsx**
+- Создан кастомный контекст: **/hooks/LogoutContext.tsx**, который при выходе из аккаунта, добавляет анимацию к header

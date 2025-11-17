@@ -35,3 +35,8 @@
   50% { transform: translateY(60%); } // опускаем на 80% высоты контейнера
   100% { transform: translateY(0); }
 }
+
+@keyframes hiddenElement {
+  0% {opacity: 1;}
+  100% {opacity: 0;}
+}

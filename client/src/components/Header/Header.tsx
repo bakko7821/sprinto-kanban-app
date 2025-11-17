@@ -3,13 +3,19 @@ import { BellIcon, KanbanIcon, HelpIcon, UserFilledIcon } from "../../assets/ico
 import "./Header.scss"
 import { SearchInput } from "./SearchInput"
 import { useEffect, useState } from "react"
-import { DropDownMenuUser } from "./DropDownMenuUser"
+import { DropDownMenuUser } from "./DropDownMenus/DropDownMenuUser"
 import type { User } from "../../utils/types"
 import axios from "axios"
+import { DropDownMenuNotification } from "./DropDownMenus/DropDownMenuNotification"
+import { DropDownMenuHelp } from "./DropDownMenus/DropDownMenuHelp"
+import { useLogout } from "../../hooks/LogoutContext"
 
 export const Header = () => {
+    const { isLoggedOut } = useLogout();
     const navigate = useNavigate();
     const [dropDownMenuUserStatus, setDropDownMenuUserStatus] = useState(false)
+    const [dropDownMenuNotificationStatus, setDropDownMenuNotificationStatus] = useState(false)
+    const [dropDownMenuHelpStatus, setDropDownMenuHelpStatus] = useState(false)
     const [user, setUser] = useState<User | null>(null)
 
     const token = localStorage.getItem("token")
@@ -36,10 +42,26 @@ export const Header = () => {
 
     const handleCloseMenu = () => {
         setDropDownMenuUserStatus(false);
+        setDropDownMenuNotificationStatus(false);
+        setDropDownMenuHelpStatus(false);
     };
 
+    const openMenu = (type: string) => {
+        setDropDownMenuUserStatus(false)
+        setDropDownMenuNotificationStatus(false)
+        setDropDownMenuHelpStatus(false)
+
+        if (type === "userMenu") {
+            setDropDownMenuUserStatus(true)
+        } else if (type === "notificationMenu") {
+            setDropDownMenuNotificationStatus(true)
+        } else {
+            setDropDownMenuHelpStatus(true)
+        }
+    }
+
     return (
-        <header className="flex-between">
+        <header className={`header flex-between ${isLoggedOut ? "logOut" : ""}`}>
             <div className="logo flex-center g8" onClick={() => navigate("/")}>
                 <KanbanIcon />
                 <span>Sprinto</span>
@@ -50,18 +72,24 @@ export const Header = () => {
             </div>
             <div className="userNavigate flex-center g8">
                 <nav className="flex-center g4">
-                    <button className="bellButton flex-center"><BellIcon /></button>
-                    <button className="helpButton flex-center"><HelpIcon /></button>
+                    <button className="bellButton flex-center" onClick={() => openMenu('notificationMenu')}><BellIcon /></button>
+                    <button className="helpButton flex-center" onClick={() => openMenu('helpMenu')}><HelpIcon /></button>
                 </nav>
-                <div className="userAvatar" onClick={() => setDropDownMenuUserStatus((prev) => !prev)}>
+                <div className="userAvatar" onClick={() => openMenu('userMenu')}>
                     <div className="glow"></div>
-                    <div className="avatar flex-center">
-                        <UserFilledIcon />
-                    </div>
+                    {user?.avatarImage ? (
+                        <img src={`http://localhost:5000/uploads/${user.avatarImage}`} alt="" className="avatar" />
+                    ) : (
+                        <div className="avatar flex-center">
+                            <UserFilledIcon />
+                        </div>
+                    )}
                 </div>
             </div>
 
             {dropDownMenuUserStatus && <DropDownMenuUser onClose={handleCloseMenu} user={user} />}
+            {dropDownMenuNotificationStatus && <DropDownMenuNotification onClose={handleCloseMenu} userId={user?.id} />}
+            {dropDownMenuHelpStatus && <DropDownMenuHelp onClose={handleCloseMenu} />}
         </header>
     )
 }
