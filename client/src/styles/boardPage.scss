@@ -6,7 +6,6 @@
     height: 100%;
 
     .headerBox {
-        border: 2px red solid;
         width: 100%;
         padding: 16px;
 
@@ -105,6 +104,113 @@
             #hammerButton:hover {
                 svg {
                     animation: hammerAnimation 1s infinite !important;
+                }
+            }
+
+            .moreButton {
+                &:hover {
+                    background-color: $background-card-hover-color;
+
+                    svg {
+                        transform: rotate(0deg);
+                    }
+                }
+            }
+        }
+    }
+
+    .columnsBox {
+        align-items: start;
+        width: 100%;
+        padding: 0px 16px;
+
+        .column {
+            background-color: $background-card-color;
+            border-radius: 20px;
+            overflow: hidden;
+            min-width: 270px;
+
+            .columnHeader {
+                align-items: center;
+                padding: 8px;
+
+                .columnName {
+                    font-size: $rem1;
+                    font-weight: 500;
+                    color: $text-color;
+                    line-height: 1.5;
+                }
+            }
+        }
+
+        .addColumnButton {
+            justify-content: start;
+            background-color: $background-card-color;
+            color: $text-color;
+            font-size: $rem1;
+            font-weight: 500;
+            min-width: 270px;
+            padding: 8px;
+            border-radius: 20px;
+            transition: all 0.5s;
+
+            &:hover {
+                background-color: $background-card-hover-color;
+
+                svg {
+                    --angle: 480deg;
+                    animation: rotate 2s infinite;
+                }
+            }
+        }
+
+        .addColumnForm {
+            background-color: $background-card-color;
+            border-radius: 20px;
+            min-width: 270px;
+            padding: 8px;
+
+            input {
+                border-radius: 12px;
+                border: 2px $text-color solid;
+                font-size: $rem1;
+                color: $text-color;
+                line-height: 1.5;
+                padding: 8px;
+                width: 100%;
+            }
+
+            .buttonsBox {
+
+                .createColumnButton {
+                    border-radius: 12px;
+                    padding: 8px;
+                    width: 100%;
+                    font-size: $rem1;
+                    font-weight: 500;
+                    color: $button-text-color;
+                    background-color: $main-color;
+                    transition: all 0.5s;
+
+                    &:hover {
+                        background-color: $main-hover-color;
+                    }
+                }
+
+                .closeFormButton {
+                    background-color: transparent;
+                    padding: 8px;
+                    border-radius: 12px;
+                    transition: all 0.5s;
+
+                    &:hover {
+                        background-color: #D49F9F;
+
+                        svg {
+                            color: #A80303;
+                            transform: rotate(30deg);
+                        }
+                    }
                 }
             }
         }

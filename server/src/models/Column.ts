@@ -1,21 +1,21 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from "../config/db";
 
-interface ComponentAttrs {
+interface ColumnAttrs {
   id: number;
   name: string;
   boardId: number;
 }
 
-interface ComponentCreation extends Optional<ComponentAttrs, "id"> {}
+interface ColumnCreation extends Optional<ColumnAttrs, "id"> {}
 
-class Component extends Model<ComponentAttrs, ComponentCreation> {
+class Column extends Model<ColumnAttrs, ColumnCreation> {
   public id!: number;
   public name!: string;
   public boardId!: number;
 }
 
-Component.init(
+Column.init(
   {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     name: DataTypes.STRING,
@@ -23,9 +23,9 @@ Component.init(
   },
   {
     sequelize,
-    modelName: "component",
-    tableName: "components"
+    modelName: "column",
+    tableName: "columns"
   }
 );
 
-export default Component;
+export default Column;

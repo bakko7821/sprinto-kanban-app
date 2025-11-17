@@ -5,6 +5,7 @@ import { connectDB, sequelize } from "./config/db";
 import authRouters from "../src/routes/auth"
 import usersRoutes from "../src/routes/users"
 import boardsRoutes from "../src/routes/boards"
+import columnsRoutes from "./routes/columns"
 import "./models"
 
 dotenv.config();
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use("/api/auth", authRouters);
 app.use("/api/users", usersRoutes);
 app.use("/api/boards", boardsRoutes);
+app.use("/api/columns", columnsRoutes);
 
 async function startServer() {
     try {

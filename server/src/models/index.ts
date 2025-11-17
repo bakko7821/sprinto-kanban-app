@@ -1,5 +1,5 @@
 import Board from "./Board";
-import Component from "./Component";
+import Component from "./Column";
 import Tag from "./Tag";
 import Task from "./Task";
 import User from "./User";

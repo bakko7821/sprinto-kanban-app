@@ -18,7 +18,7 @@ export interface Board {
     users: User[];
     isPrivate: boolean;
     
-    components: Component[];
+    components: Column[];
 }
 
 export interface Notification {
@@ -27,7 +27,7 @@ export interface Notification {
     content: string;
 }
 
-export interface Component {
+export interface Column {
     id: number;
     name: string;
     

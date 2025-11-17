@@ -65,3 +65,16 @@
 ### Клиентская часть
 
 - Создана и стилизована страница **BoardPage.tsx**
+
+# commit 5.8.0
+
+### Серверная часть
+
+- Создан POST, GET роут в **columns.ts**
+- Модель **Component.ts** изменена на **Column.ts**
+
+### Клиенсткая часть
+
+- Создан компонент **/components/BoardPage/ColumnComponent.tsx**
+- Создан запрос на получение и создание колонки в **/pages/BoardPage.tsx**
+- Закончена стилизация Header и Columns в **/pages/BoardPage.tsx**

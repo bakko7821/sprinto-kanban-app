@@ -5,7 +5,7 @@ interface TaskAttrs {
   id: number;
   name: string;
   deadline: string;
-  componentId: number;
+  columnId: number;
 }
 
 interface TaskCreation extends Optional<TaskAttrs, "id"> {}
@@ -14,7 +14,7 @@ class Task extends Model<TaskAttrs, TaskCreation> {
   public id!: number;
   public name!: string;
   public deadline!: string;
-  public componentId!: number;
+  public columnId!: number;
 }
 
 Task.init(
@@ -22,7 +22,7 @@ Task.init(
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     name: DataTypes.STRING,
     deadline: DataTypes.STRING,
-    componentId: { type: DataTypes.INTEGER, allowNull: false }
+    columnId: { type: DataTypes.INTEGER, allowNull: false }
   },
   {
     sequelize,

@@ -25,10 +25,10 @@ export interface Board {
     users: User[]
     isPrivate: boolean;
     
-    components: Component[];
+    components: Column[];
 }
 
-export interface Component {
+export interface Column {
     id: number;
     name: string;
     

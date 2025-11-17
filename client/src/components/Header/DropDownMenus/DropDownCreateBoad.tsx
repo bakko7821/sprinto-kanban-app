@@ -10,7 +10,6 @@ interface DropDownCreateBoardProps {
 export const DropDownCreateBoard = ({ onClose }: DropDownCreateBoardProps) => {
     const [boardName, setBoardName] = useState("")
     const [visibility, setVisibility] = useState("public")
-    const [visibilityBoolean, setVisibilityBoolean] = useState(false)
     const menuRef = useRef<HTMLDivElement | null>(null);
         
     useEffect(() => {
