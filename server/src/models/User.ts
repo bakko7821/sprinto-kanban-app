@@ -13,6 +13,7 @@ class User extends Model {
   public online!: boolean;
 
   public canvas!: Board[];
+  public notifications!: Notification[];
   public teams!: any[];
 }
 
@@ -26,6 +27,7 @@ User.init(
         subcsribe: { type: DataTypes.BOOLEAN, defaultValue: false },
         online: { type: DataTypes.BOOLEAN, defaultValue: false },
         canvas: { type: DataTypes.JSONB, allowNull: false, defaultValue: [] },
+        notifications: { type: DataTypes.JSONB, allowNull: false, defaultValue: [] },
         teams: { type: DataTypes.JSONB, allowNull: false, defaultValue: [] },
     },
     {

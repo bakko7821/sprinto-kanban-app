@@ -46,3 +46,8 @@
 - Добавленна возможность выхода из аккаунта
 - Созданы компоненты: **DropDownMenuNotification.tsx**, **DropDownMenuHelp.tsx**
 - Создан кастомный контекст: **/hooks/LogoutContext.tsx**, который при выходе из аккаунта, добавляет анимацию к header
+
+# commit 3.5.0
+
+- Созданы модели: **Board.ts**, **Component.ts**, **Tag.ts**, **Task.ts**, **Notification.ts**
+- Создан файл **/models/associations.ts**

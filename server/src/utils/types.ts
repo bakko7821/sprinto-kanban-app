@@ -1,5 +1,13 @@
 export interface User {
     id: number;
+    username: string;
+    avatarImage?: string;
+    email: string;
+    subscribe: boolean;
+    online: boolean;
+    canvas: Board[];
+    notifications:Notification[]; 
+    teams: number[];
 }
 
 export interface Board {
@@ -7,10 +15,16 @@ export interface Board {
     name: string;
     backgroundImage: string;
     owner: User;
-    users: User[]
+    users: User[];
     isPrivate: boolean;
     
     components: Component[];
+}
+
+export interface Notification {
+    id: number;
+    read: boolean;
+    content: string;
 }
 
 export interface Component {

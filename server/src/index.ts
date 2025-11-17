@@ -20,6 +20,7 @@ async function startServer() {
         await connectDB();
 
         await sequelize.sync({ alter: true });
+        console.log("All models synchronization")
 
         const PORT = process.env.PORT || 5000;
 
