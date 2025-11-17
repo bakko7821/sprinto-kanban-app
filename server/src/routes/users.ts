@@ -15,7 +15,7 @@ router.get("/:id", authMiddleware, async(req: AuthRequest, res: Response) => {
         const user = await User.findByPk(userId)
 
         if (!user) {
-        return res.status(404).json({ message: "Пользователь не найден" });
+            return res.status(404).json({ message: "Пользователь не найден" });
         }
 
         res.json(user);

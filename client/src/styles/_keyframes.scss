@@ -40,3 +40,15 @@
   0% {opacity: 1;}
   100% {opacity: 0;}
 }
+
+@keyframes hammerAnimation {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(45deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}

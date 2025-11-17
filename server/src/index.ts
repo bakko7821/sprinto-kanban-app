@@ -4,6 +4,7 @@ import cors from "cors";
 import { connectDB, sequelize } from "./config/db";
 import authRouters from "../src/routes/auth"
 import usersRoutes from "../src/routes/users"
+import boardsRoutes from "../src/routes/boards"
 import "./models"
 
 dotenv.config();
@@ -14,6 +15,7 @@ app.use(cors());
 app.use(express.json());
 app.use("/api/auth", authRouters);
 app.use("/api/users", usersRoutes);
+app.use("/api/boards", boardsRoutes);
 
 async function startServer() {
     try {

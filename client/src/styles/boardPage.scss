@@ -1,0 +1,112 @@
+@use './variables' as *;
+@use './keyframes' as *;
+
+.boardPage {
+    width: 100%;
+    height: 100%;
+
+    .headerBox {
+        border: 2px red solid;
+        width: 100%;
+        padding: 16px;
+
+        .nameText {
+            font-size: $rem1;
+            color: $text-color;
+            background-color: $background-card-color;
+            font-weight: 500;
+            line-height: 1.5;
+            padding: 8px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.5s;
+
+            &:hover {
+                background-color: $background-card-hover-color;
+            }
+        }
+
+        .changeNameForm {
+            align-items: center;
+            background-color: $background-card-color;
+            
+            padding: 8px;
+            border-radius: 12px;
+
+            input {
+                padding: 2px;
+                width: fit-content;
+                font-size: $rem1;
+                color: $text-color;
+                font-weight: 500;
+                line-height: 1.5;
+            }
+
+            button {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 4px;
+                background-color: transparent;
+                transition: all 0.5s;
+                border-radius: 4px;
+
+                svg {
+                    color: $text-color;
+                    width: 18px;
+                    height: 18px;
+                }
+
+                &:hover {
+                    background-color: $main-hover-color;
+
+                    svg {
+                        color: $button-text-color;
+                        transform: rotate(30deg);
+                    }
+                }
+            }
+        }
+
+        nav {
+            button {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 8px;
+                border-radius: 12px;
+                transition: all 0.5s;
+
+                svg {
+                    color: $text-color;
+                }
+
+                &:hover {
+                    background-color: $background-card-hover-color;
+
+                    svg {
+                        transform: rotate(30deg);
+                    }
+                }
+            }
+
+            .shareButton {
+                background-color: $main-color;
+                color: $button-text-color;
+                font-size: $rem1;
+                font-weight: 500;
+                line-height: 1.5;
+
+                &:hover {
+                    background-color: $main-hover-color;
+                }
+            }
+
+            #hammerButton:hover {
+                svg {
+                    animation: hammerAnimation 1s infinite !important;
+                }
+            }
+        }
+    }
+}

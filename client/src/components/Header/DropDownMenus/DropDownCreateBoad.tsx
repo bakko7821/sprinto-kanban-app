@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { CrossIcon, EyeIcon, LockIcon } from "../../../assets/icons";
 import { VisibilitySelect } from "./VisibilitySelect";
+import axios from "axios";
 
 interface DropDownCreateBoardProps {
     onClose: () => void;
@@ -9,6 +10,7 @@ interface DropDownCreateBoardProps {
 export const DropDownCreateBoard = ({ onClose }: DropDownCreateBoardProps) => {
     const [boardName, setBoardName] = useState("")
     const [visibility, setVisibility] = useState("public")
+    const [visibilityBoolean, setVisibilityBoolean] = useState(false)
     const menuRef = useRef<HTMLDivElement | null>(null);
         
     useEffect(() => {
@@ -27,8 +29,34 @@ export const DropDownCreateBoard = ({ onClose }: DropDownCreateBoardProps) => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(`Имя: ${boardName}, Видимость: ${visibility}`)
-    }
+
+        const token = localStorage.getItem("token");
+        const userId = localStorage.getItem("userId");
+
+        if (!token || !userId) return;
+
+        const isPrivate = visibility === "public" ? false : true;
+
+        try {
+            await axios.post(
+                `http://localhost:5000/api/boards/${userId}`,
+                {
+                    name: boardName,
+                    isPrivate: isPrivate,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            onClose();
+        } catch (err) {
+            console.error("Ошибка при создании доски:", err);
+        }
+    };
+
 
     return (
         <div ref={menuRef} className="dropDownCreateBoard flex-column g8">

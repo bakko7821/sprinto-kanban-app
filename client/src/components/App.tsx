@@ -5,6 +5,7 @@ import MainLayout from "./layouts/MainLayout";
 import { AuthPage } from "../pages/auth/AuthPage";
 import { HomePage } from "../pages/HomePage";
 import { NotFoundPage } from "../pages/NotFoundPage";
+import { BoardPage } from "../pages/BoardPage";
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
 
       <Route element={<MainLayout />}>
         <Route path="/" element={<HomePage />} />
+        <Route path="/board/:id" element={<BoardPage />} />
       </Route>
     </Routes>
   );

@@ -55,3 +55,13 @@
 # commit 3.6.0
 
 - Созданы и стилизованны компоненты **DropDownCreateBoard.tsx**, **VisibilitySelect.tsx**
+
+# commit 4.7.0
+
+### Серверная чать
+
+- Создан POST, GET роут в **boards.ts**
+
+### Клиентская часть
+
+- Создана и стилизована страница **BoardPage.tsx**
