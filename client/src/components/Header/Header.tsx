@@ -9,6 +9,7 @@ import axios from "axios"
 import { DropDownMenuNotification } from "./DropDownMenus/DropDownMenuNotification"
 import { DropDownMenuHelp } from "./DropDownMenus/DropDownMenuHelp"
 import { useLogout } from "../../hooks/LogoutContext"
+import { DropDownCreateBoard } from "./DropDownMenus/DropDownCreateBoad"
 
 export const Header = () => {
     const { isLoggedOut } = useLogout();
@@ -16,6 +17,7 @@ export const Header = () => {
     const [dropDownMenuUserStatus, setDropDownMenuUserStatus] = useState(false)
     const [dropDownMenuNotificationStatus, setDropDownMenuNotificationStatus] = useState(false)
     const [dropDownMenuHelpStatus, setDropDownMenuHelpStatus] = useState(false)
+    const [dropDownCreateBoardStatus, setDropDownCreateBoardStatus] = useState(false)
     const [user, setUser] = useState<User | null>(null)
 
     const token = localStorage.getItem("token")
@@ -44,6 +46,7 @@ export const Header = () => {
         setDropDownMenuUserStatus(false);
         setDropDownMenuNotificationStatus(false);
         setDropDownMenuHelpStatus(false);
+        setDropDownCreateBoardStatus(false)
     };
 
     const openMenu = (type: string) => {
@@ -55,8 +58,10 @@ export const Header = () => {
             setDropDownMenuUserStatus(true)
         } else if (type === "notificationMenu") {
             setDropDownMenuNotificationStatus(true)
-        } else {
+        } else if (type === "helpMenu") {
             setDropDownMenuHelpStatus(true)
+        } else {
+            setDropDownCreateBoardStatus(true)
         }
     }
 
@@ -68,7 +73,7 @@ export const Header = () => {
             </div>
             <div className="searchBox flex-center g16">
                 <SearchInput />
-                <button className="createTaskButton">Создать</button>
+                <button className="createTaskButton" onClick={() => openMenu('createBoard')}>Создать доску</button>
             </div>
             <div className="userNavigate flex-center g8">
                 <nav className="flex-center g4">
@@ -86,10 +91,11 @@ export const Header = () => {
                     )}
                 </div>
             </div>
-
+                    
             {dropDownMenuUserStatus && <DropDownMenuUser onClose={handleCloseMenu} user={user} />}
             {dropDownMenuNotificationStatus && <DropDownMenuNotification onClose={handleCloseMenu} userId={user?.id} />}
             {dropDownMenuHelpStatus && <DropDownMenuHelp onClose={handleCloseMenu} />}
+            {dropDownCreateBoardStatus && <DropDownCreateBoard onClose={handleCloseMenu} />}
         </header>
     )
 }

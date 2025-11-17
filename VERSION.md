@@ -51,3 +51,7 @@
 
 - Созданы модели: **Board.ts**, **Component.ts**, **Tag.ts**, **Task.ts**, **Notification.ts**
 - Создан файл **/models/associations.ts**
+
+# commit 3.6.0
+
+- Созданы и стилизованны компоненты **DropDownCreateBoard.tsx**, **VisibilitySelect.tsx**

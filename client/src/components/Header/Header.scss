@@ -189,11 +189,6 @@ header {
             text-transform: uppercase;
         }
 
-        .plug {
-            width: 100%;
-            height: 1px;
-            background-color: $second-text-color;
-        }
 
         .userInfoBox {
             padding: 0px 8px;
@@ -238,6 +233,123 @@ header {
             }
         }
     }
+
+    .dropDownCreateBoard {
+        position: absolute;
+        background-color: $background-second-card-color;
+        top: 100%;
+        left: 55.5%;
+        padding: 8px;
+        min-width: 320px;
+        border-radius: 0px 0px 20px 20px;
+
+        .headerBox {
+            align-items: center;
+            padding: 0px 8px;
+
+            .headingText {
+                font-size: $rem0_875;
+                color: $second-text-color;
+                font-weight: 500;
+                text-transform: uppercase;
+            }
+
+            .closeMenuButton {
+                svg {
+                    color: $second-text-color;
+                }
+
+                &:hover {
+                    svg {
+                        color: $text-color;
+                        transform: rotate(30deg);
+                    }
+                }
+            }
+        }
+
+        form {
+            .nameBox {
+                label, span {
+                    padding: 0px 8px;
+                    font-size: $rem1;
+                    line-height: 1.5;
+                    color: $text-color;
+                    font-weight: 500;
+                }
+
+                input {
+                    font-size: $rem1;
+                    color: $text-color;
+                    line-height: 1.5;
+                    width: 100%;
+                    border: 2px $main-color solid;
+                    padding: 8px;
+                    border-radius: 12px;
+                }
+            }
+
+            .visibilityBox {
+                label {
+                    padding: 0px 8px;
+                    font-size: $rem1;
+                    line-height: 1.5;
+                    color: $text-color;
+                    font-weight: 500;
+                }
+
+                .visibilitySelect {
+                    border-radius: 12px;
+                    overflow: hidden;
+                    background-color: $background-card-hover-color;
+
+                    .selected {
+                        font-size: $rem1;
+                        line-height: 1.5;
+                        font-weight: 500;
+                        background-color: $main-color;
+                        padding: 8px;
+                        color: $button-text-color;
+                        border-radius: 12px;
+                    }
+
+                    ul {
+                        li {
+                            cursor: pointer;
+                            font-size: $rem1;
+                            line-height: 1.5;
+                            font-weight: 500;
+                            justify-content: start;
+                            padding: 8px;
+                            transition: all 0.5s;
+                            border-radius: 12px;
+
+                            &:hover {
+                                background-color: $second-text-color;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .createBoardButton {
+                padding: 8px 16px;
+                font-size: $rem1;
+                line-height: 1.5;
+                font-weight: 500;
+                border-radius: 12px;
+                color: $text-color;
+                background-color: transparent;
+                border: 2px $main-hover-color solid;
+                transition: all 0.5s;
+
+                &:hover {
+                    background-color: $main-hover-color;
+                    color: $button-text-color;
+                }
+            }
+        }
+    }
 }
 
 header.logOut {
@@ -246,4 +358,10 @@ header.logOut {
     .logo, .searchBox, .userNavigate, .dropDownMenuUser, .dropDownMenuNotification, .dropDownMenuHelp {
         animation: hiddenElement 2s ease-in-out;
     }
+}
+
+.plug {
+    width: 100%;
+    height: 2px;
+    background-color: $second-text-color;
 }
