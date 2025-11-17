@@ -64,7 +64,7 @@ router.post(
       }
 
       const token = jwt.sign(
-        { id: user.id, email: user.email, username: user.username },
+        { id: user.id },
         process.env.JWT_SECRET as string,
         { expiresIn: "7d" }
       );
@@ -72,11 +72,7 @@ router.post(
       return res.json({
         message: "Успешный вход",
         token,
-        user: {
-          id: user.id,
-          username: user.username,
-          email: user.email
-        }
+        id: user.id
       });
     } catch (error) {
       console.error("Ошибка при авторизации:", error);

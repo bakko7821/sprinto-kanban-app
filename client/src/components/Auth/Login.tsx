@@ -20,9 +20,9 @@ export const Login = () => {
 
 
             localStorage.setItem("token", response.data.token);
-            localStorage.setItem("authUser", JSON.stringify(response.data.user));
+            localStorage.setItem("userId", response.data.id);
 
-            setMessage(response.data.msg ?? `Добро пожаловать, ${response.data.user.username}!`);
+            setMessage(response.data.msg ?? `Добро пожаловать`);
             navigate("/");
             window.location.reload();
         } catch (err) {

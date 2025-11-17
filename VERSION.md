@@ -28,3 +28,14 @@
 
 - Заполнены и стилизованны компоненты **Login.tsx**, **Register.tsx**, **Recovery.tsx**, **NotFound.tsx**
 - Создана страница **NotFoundPage.tsx**
+
+# commit 2.4.0
+
+### Серверная часть
+
+- Создан GET роут на получение пользователя по ID в **/routes/users.ts**
+- Чуть изменен **authMiddleware.ts** и **/routes/auth.ts**
+
+### Клиентская част
+
+- Создан скелет для **DropDownMenuUser.tsx**

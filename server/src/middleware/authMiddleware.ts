@@ -4,7 +4,6 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 export interface AuthRequest extends Request {
   user?: {
     id: number;
-    username?: string;
   };
 }
 
@@ -23,7 +22,6 @@ const authMiddleware = (req: AuthRequest, res: Response, next: NextFunction): vo
 
     req.user = {
       id: decoded.id as number,
-      username: decoded.username as string | undefined,
     };
 
     next();
