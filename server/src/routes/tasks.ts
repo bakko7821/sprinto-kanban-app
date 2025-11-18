@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import authMiddleware, { AuthRequest } from "../middleware/authMiddleware";
 import Component from "../models/Column";
 import Board from "../models/Board";
-import Column from "../models/Column";
+import Task from "../models/Task";
 
 const router = express.Router()
 
@@ -15,21 +15,23 @@ router.post("/:id", authMiddleware, async(req: AuthRequest, res: Response) => {
 
     try {
         const { name } = req.body;
-        const boardId = Number(req.params.id)
+        const columnId = Number(req.params.id)
 
-        const newColumn = await Column.create({
+        const newTask = await Task.create({
             name,
-            boardId: boardId,
+            columnId: columnId,
+            deadline: "",
+            isDone: false,
         });
 
-        res.json(newColumn);
+        res.json(newTask);
     } catch (error: unknown) {
         console.error(error);
-        res.status(500).json({ message: "Ошибка при создании нового столбца" });
+        res.status(500).json({ message: "Ошибка при создании новой доски" });
     }
 })
 
-router.get("/boardId/:id", authMiddleware, async(req: AuthRequest, res: Response) => {
+router.get("/columnId/:id", authMiddleware, async(req: AuthRequest, res: Response) => {
     const userId = (req.user as any)?.id;
     
     if (!userId) {
@@ -39,15 +41,15 @@ router.get("/boardId/:id", authMiddleware, async(req: AuthRequest, res: Response
     try {
         const id = Number(req.params.id)
 
-        const columns = await Column.findAll({
-            where: { boardId: id }
+        const tasks = await Task.findAll({
+            where: { columnId: id }
         });
 
-        if (!columns) {
-            return res.status(404).json({ message: "Колонка не найдена" });
+        if (!tasks) {
+            return res.status(404).json({ message: "Задачи не найдены" });
         }
 
-        res.json(columns);
+        res.json(tasks);
 
     } catch (error: unknown) {
         console.error(error);

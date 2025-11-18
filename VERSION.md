@@ -78,3 +78,15 @@
 - Создан компонент **/components/BoardPage/ColumnComponent.tsx**
 - Создан запрос на получение и создание колонки в **/pages/BoardPage.tsx**
 - Закончена стилизация Header и Columns в **/pages/BoardPage.tsx**
+
+# commit 6.9.0
+
+### Серверная часть
+
+- Создан POST, GET роут в **tasks.ts**
+- Изменена модели **Task.ts** - добавлен параметр isDone(false)
+
+### Клиенсткая часть
+
+- Создан компонент **TaskComponents.tsx**
+- Добавлена логика отрисовки задач в **ColumnComponents.tsx**

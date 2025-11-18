@@ -129,16 +129,67 @@
             border-radius: 20px;
             overflow: hidden;
             min-width: 270px;
+            padding: 8px;
 
             .columnHeader {
-                align-items: center;
                 padding: 8px;
+                align-items: center;
 
                 .columnName {
                     font-size: $rem1;
                     font-weight: 500;
                     color: $text-color;
                     line-height: 1.5;
+                }
+            }
+
+            .taskList {
+                .taskComponent {
+                    width: 100%;
+                    padding: 8px;
+                    border-radius: 12px;
+                    background-color: $background-second-card-color;
+                    transition: all 0.5s;
+                    cursor: pointer;
+
+                    &:hover {
+                        background-color: $background-card-hover-color;
+                    }
+
+                    .checkbox {
+                        cursor: pointer;
+                        width: 20px;
+                        height: 20px;
+                        border-radius: 100%;
+                        border: 1px $text-color solid;
+                        padding: 2px;
+                    }
+                    
+                    .checkbox.active {
+                        border: 1px $main-color solid;
+                        background-color: $main-color;
+
+                        svg {
+                            color: $button-text-color;
+                        }
+                    }
+                }
+            }
+
+            .addTaskButton {
+                border-radius: 12px;
+                font-size: $rem1;
+                color: $text-color;
+                font-weight: 500;
+                padding: 8px;
+                transition: all 0.5s;
+
+                &:hover {
+                    background-color: $background-card-hover-color;
+
+                    svg {
+                        transform: rotate(30deg);
+                    }
                 }
             }
         }
@@ -164,7 +215,7 @@
             }
         }
 
-        .addColumnForm {
+        .addColumnForm, .addTaskForm {
             background-color: $background-card-color;
             border-radius: 20px;
             min-width: 270px;
@@ -182,7 +233,7 @@
 
             .buttonsBox {
 
-                .createColumnButton {
+                .createColumnButton, .createTaskButton {
                     border-radius: 12px;
                     padding: 8px;
                     width: 100%;

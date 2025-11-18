@@ -6,6 +6,7 @@ import authRouters from "../src/routes/auth"
 import usersRoutes from "../src/routes/users"
 import boardsRoutes from "../src/routes/boards"
 import columnsRoutes from "./routes/columns"
+import tasksRoutes from "./routes/tasks"
 import "./models"
 
 dotenv.config();
@@ -18,6 +19,7 @@ app.use("/api/auth", authRouters);
 app.use("/api/users", usersRoutes);
 app.use("/api/boards", boardsRoutes);
 app.use("/api/columns", columnsRoutes);
+app.use("/api/tasks", tasksRoutes);
 
 async function startServer() {
     try {
