@@ -39,8 +39,9 @@ export interface Task {
     id: number;
     name: string;
     deadline: string;
+    isDone: boolean;
     
-    tags: Tag[];
+    tags: number[];
 }
 
 export interface Tag {

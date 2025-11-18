@@ -7,6 +7,7 @@ interface TaskAttrs {
   deadline: string;
   isDone: boolean;
   columnId: number;
+  tags: number[];
 }
 
 interface TaskCreation extends Optional<TaskAttrs, "id"> {}
@@ -17,6 +18,7 @@ class Task extends Model<TaskAttrs, TaskCreation> {
   public isDone!: boolean;
   public deadline!: string;
   public columnId!: number;
+  public tags!: number[];
 }
 
 Task.init(
@@ -25,7 +27,13 @@ Task.init(
     name: DataTypes.STRING,
     deadline: DataTypes.STRING,
     isDone: DataTypes.BOOLEAN,
-    columnId: { type: DataTypes.INTEGER, allowNull: false }
+    columnId: { type: DataTypes.INTEGER, allowNull: false },
+
+    tags: {
+      type: DataTypes.ARRAY(DataTypes.INTEGER),
+      allowNull: false,
+      defaultValue: []
+    }
   },
   {
     sequelize,

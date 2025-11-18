@@ -127,8 +127,7 @@
         .column {
             background-color: $background-card-color;
             border-radius: 20px;
-            overflow: hidden;
-            min-width: 270px;
+            width: 270px;
             padding: 8px;
 
             .columnHeader {
@@ -144,6 +143,16 @@
             }
 
             .taskList {
+                .backgroundBlur {
+                    position: fixed;
+                    top: 0px;
+                    left: 0px;
+                    width: 100vw;
+                    height: 100vh;
+                    z-index: 99;
+                    background-color: rgba($color: #000000, $alpha: 0.4);
+                }
+
                 .taskComponent {
                     width: 100%;
                     padding: 8px;
@@ -151,13 +160,44 @@
                     background-color: $background-second-card-color;
                     transition: all 0.5s;
                     cursor: pointer;
+                    position: relative;
+
+                    .buttonsBox {
+                        width: fit-content;
+                        height: 100%;
+                        border-radius: 12px;
+                        background-color: rgba($color: #000000, $alpha: 0.3);
+                        backdrop-filter: blur(1px);
+                        position: absolute;
+                        transition: all 0.5s;
+                        right: 0px;
+                        top: 0px;
+                        opacity: 0;
+                        padding: 8px;
+
+                        button {
+                            color: $button-text-color;
+                            transition: all 0.5s;
+
+                            &:hover {
+                                svg {
+                                    transform: rotate(30deg);
+                                }
+                            }
+                        }
+                    }
 
                     &:hover {
                         background-color: $background-card-hover-color;
+
+                        .buttonsBox {
+                            opacity: 1;
+                        }
                     }
 
                     .checkbox {
                         cursor: pointer;
+                        min-width: 20px;
                         width: 20px;
                         height: 20px;
                         border-radius: 100%;
@@ -172,6 +212,113 @@
                         svg {
                             color: $button-text-color;
                         }
+                    }
+
+                    .taskContent {
+                        span {
+                            width: fit-content;
+                            font-size: $rem1;
+                            color: $text-color;
+                            font-weight: 400;
+                            line-height: 1.5;
+                        }
+
+                        .editTaskForm {
+                            width: 100%;
+
+                            input {
+                                padding: 8px;
+                                font-size: $rem1;
+                                color: $text-color;
+                                line-height: 1.5;
+                            }
+
+                            .formButtonsBox {
+                                width: 100%;
+
+                                button {
+                                    width: 100%;
+                                    padding: 8px;
+                                    border-radius: 12px;
+                                    transition: all 0.5s;
+                                }
+
+                                button.createTaskButton {
+                                    background-color: $main-color;
+                                    color: $button-text-color;
+
+                                    &:hover {
+                                        background-color: $main-hover-color;
+
+                                        svg {
+                                            transform: rotate(30deg);
+                                        }
+                                    }
+                                }
+
+                                button.closeFormButton {
+                                    background-color: #D49F9F;
+                                    color: #A80303;
+
+                                    &:hover {
+                                        background-color: #C47C7C;
+
+                                        svg {
+                                            transform: rotate(30deg);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    .editTaskDropDownMenu {
+                        left: calc(100% + 8px);
+                        top: 0px;
+                        z-index: 100;
+                        position: absolute;
+
+                        button {
+                            align-items: center;
+                            border-radius: 12px;
+                            white-space: nowrap;
+                            font-size: $rem1;
+                            font-weight: 500;
+                            color: $text-color;
+                            line-height: 1.5;
+                            padding: 8px;
+                            background-color: $background-card-color;
+                            transition: all 0.5s;
+
+                            &:hover {
+                                background-color: $background-card-hover-color;
+
+                                svg {
+                                    transform: rotate(30deg);
+                                }
+                            }
+                        }
+
+                        button.deleteButton {
+                            &:hover {
+                                background-color: #D49F9F;
+                                color: #A80303;
+
+                                svg {
+                                    transform: rotate(30deg);
+                                    color: #A80303;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .taskComponent.active {
+                    position: relative;
+                    z-index: 100 !important;
+
+                    .buttonsBox {
+                        opacity: 0 !important;
                     }
                 }
             }

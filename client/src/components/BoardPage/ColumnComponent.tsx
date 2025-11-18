@@ -69,6 +69,16 @@ export const ColumnComponent = ({ column }: ColumnComponentProps) => {
         console.log('Выбрана задача')
     }
 
+    const updateTask = async (id: number, updated: Partial<Task>) => {
+        await axios.put(`http://localhost:5000/api/tasks/${id}`, updated, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+
+        setTasks(prev =>
+            prev.map(t => t.id === id ? { ...t, ...updated } : t)
+        );
+    };
+
     return (
         <div className="column flex-column g12">
             <div className="columnHeader flex-between">
@@ -77,7 +87,7 @@ export const ColumnComponent = ({ column }: ColumnComponentProps) => {
             </div>
             <div className="taskList flex-column g8">
                 {tasks.map((task) => {
-                    return <TaskComponent task={task} onDone={handleDoneTask} key={task.id}/>
+                    return <TaskComponent task={task} onDone={handleDoneTask} key={task.id} onUpdate={updateTask}/>
                 })}
             </div>
             {!isAdding ? (

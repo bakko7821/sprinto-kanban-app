@@ -90,3 +90,14 @@
 
 - Создан компонент **TaskComponents.tsx**
 - Добавлена логика отрисовки задач в **ColumnComponents.tsx**
+
+# commit 7.10.0
+
+### Серверная часть
+
+- Создан PUT роут для изменения задачи **/routes/tasks.ts**
+
+### Клиентская часть
+
+- Созданы компоненты **TagComponent.tsx** и **/components/BoardPage/DropDownMenus/EditTaskDropDownMenu.tsx**
+- Стилизован **EditTaskDropDownMenu.tsx**
