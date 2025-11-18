@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BackIcon, CrossIcon, EditIcon3 } from "../../../assets/icons";
+import { BackIcon, CrossIcon, DoneIcon, EditIcon3 } from "../../../assets/icons";
 import type { Tag, Task } from "../../../utils/types";
 import { PickColor } from "../PickColorComponent";
 import axios from "axios";
@@ -7,10 +7,12 @@ import axios from "axios";
 interface ChangeTagsDropDownMenuProps {
     onClose: () => void;
     task: Task;
+    onChangeTags: (tags: number[]) => void;
 }
 
-export const ChangeTagsDropDownMenu = ({onClose, task}: ChangeTagsDropDownMenuProps) => {
+export const ChangeTagsDropDownMenu = ({onClose, task, onChangeTags}: ChangeTagsDropDownMenuProps) => {
     const [isCreatingNewTag, setIsCreatingNewTag] = useState(false)
+    const [selectedTags, setSelectedTags] = useState<number[]>(task.tags || []);
     const [newTagName, setIsNewTagName] = useState("")
     const [newTagColor, setIsNewTagColor] = useState("")
     const token = localStorage.getItem("token")
@@ -69,6 +71,19 @@ export const ChangeTagsDropDownMenu = ({onClose, task}: ChangeTagsDropDownMenuPr
         fetchTasks()
     }, [])
 
+    const handleSelect = (id: number) => {
+        let updated;
+
+        if (selectedTags.includes(id)) {
+            updated = selectedTags.filter(t => t !== id);
+        } else {
+            updated = [...selectedTags, id];
+        }
+
+        setSelectedTags(updated);
+        onChangeTags(updated);
+    };
+
     return (
         <div className={`changeTagsDropDownMenu flex-column g12 ${!isCreatingNewTag ? "" : "edit"}`}>
             {!isCreatingNewTag ? (
@@ -80,7 +95,12 @@ export const ChangeTagsDropDownMenu = ({onClose, task}: ChangeTagsDropDownMenuPr
                 <div className="tagsList flex-column g8">
                 {tags.map((tag) => {
                     return <div key={tag.id} className="tagComponent flex-center g8">
-                        <div className="checkbox"></div>
+                        <div
+                            className={`checkbox flex-center ${selectedTags.includes(tag.id) ? "active" : ""}`}
+                            onClick={() => handleSelect(tag.id)}
+                        >
+                            {selectedTags.includes(tag.id) && <DoneIcon />}
+                        </div>
                         <div 
                             className="tagContent"
                             style={{ backgroundColor: tag.color }}

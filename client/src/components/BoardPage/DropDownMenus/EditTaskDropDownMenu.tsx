@@ -7,9 +7,10 @@ interface EditTaskDropDownMenuProps {
     onClose: () => void;
     taskRef: React.RefObject<HTMLDivElement | null>;
     task: Task
+    onChangeTags: (tags: number[]) => void;
 }
 
-export const EditTaskDropDownMenu = ({onClose, taskRef, task}: EditTaskDropDownMenuProps ) => {
+export const EditTaskDropDownMenu = ({onClose, taskRef, task, onChangeTags}: EditTaskDropDownMenuProps ) => {
     const [isEditingTags, setIsEditingTags] = useState(false)
     const menuRef = useRef<HTMLDivElement | null>(null);
             
@@ -49,7 +50,7 @@ export const EditTaskDropDownMenu = ({onClose, taskRef, task}: EditTaskDropDownM
             <button className="deleteButton flex g8"><TrashIcon /> Удалить</button>
 
             {isEditingTags && (
-                <ChangeTagsDropDownMenu onClose={handleCloseDropDown} task={task} />
+                <ChangeTagsDropDownMenu onClose={handleCloseDropDown} task={task} onChangeTags={onChangeTags} />
             )}
         </div>
         </>

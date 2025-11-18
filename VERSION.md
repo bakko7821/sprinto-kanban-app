@@ -112,3 +112,7 @@
 
 - Созданы компоненты: **PickColor.tsx** и **/components/BoardPage/DropDownMenus/ChangeTagsDropDownMenu.tsx**
 - Cтилизованы: **ChangeTagsDropDownMenu.tsx**, **PickColor.tsx**
+
+# commit 8.12.0
+
+- Реализованна логика изменения тегов задачи

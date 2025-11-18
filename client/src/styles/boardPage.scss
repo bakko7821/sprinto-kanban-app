@@ -162,6 +162,15 @@
                     cursor: pointer;
                     position: relative;
 
+                    .taskTagsBox {
+                        .tagPreview {
+                            max-width: 48px;
+                            width: 48px;
+                            height: 8px;
+                            border-radius: 12px;
+                        }
+                    }
+
                     .buttonsBox {
                         width: fit-content;
                         height: 100%;
