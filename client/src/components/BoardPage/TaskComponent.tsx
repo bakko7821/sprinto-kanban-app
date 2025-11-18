@@ -103,7 +103,7 @@ export const TaskComponent = ({task, onDone, onUpdate}: TaskComponentsProps) => 
             {!isEdit ? (
                 null
             ) : (
-                <EditTaskDropDownMenu onClose={handleCloseDropDownMenu} taskRef={taskRef} />
+                <EditTaskDropDownMenu onClose={handleCloseDropDownMenu} taskRef={taskRef} task={task}/>
             )}
         </div>
         </>

@@ -101,3 +101,14 @@
 
 - Созданы компоненты **TagComponent.tsx** и **/components/BoardPage/DropDownMenus/EditTaskDropDownMenu.tsx**
 - Стилизован **EditTaskDropDownMenu.tsx**
+
+# commit 8.11.0
+
+### Серверная часть
+
+- Создан POST, GET роут для создания и получения тегов **/routes/tags.ts**
+
+### Клиентская часть
+
+- Созданы компоненты: **PickColor.tsx** и **/components/BoardPage/DropDownMenus/ChangeTagsDropDownMenu.tsx**
+- Cтилизованы: **ChangeTagsDropDownMenu.tsx**, **PickColor.tsx**

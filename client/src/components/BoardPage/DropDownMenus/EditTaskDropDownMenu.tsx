@@ -1,12 +1,16 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArchiveIcon, CopyIcon, OpenIcon, TagsIcon, TimeAddIcon, TrashIcon, UnknowUserIcon } from "../../../assets/icons"
+import type { Task } from "../../../utils/types";
+import { ChangeTagsDropDownMenu } from "./ChangeTagsDropDownMenu";
 
 interface EditTaskDropDownMenuProps {
     onClose: () => void;
     taskRef: React.RefObject<HTMLDivElement | null>;
+    task: Task
 }
 
-export const EditTaskDropDownMenu = ({onClose, taskRef}: EditTaskDropDownMenuProps ) => {
+export const EditTaskDropDownMenu = ({onClose, taskRef, task}: EditTaskDropDownMenuProps ) => {
+    const [isEditingTags, setIsEditingTags] = useState(false)
     const menuRef = useRef<HTMLDivElement | null>(null);
             
     useEffect(() => {
@@ -29,16 +33,24 @@ export const EditTaskDropDownMenu = ({onClose, taskRef}: EditTaskDropDownMenuPro
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [onClose, taskRef]);
 
+    const handleCloseDropDown = () => {
+        setIsEditingTags(false)
+    }
+
     return (
         <>
         <div ref={menuRef} className="editTaskDropDownMenu flex-column g8">
             <button className="openButton flex g8"><OpenIcon /> Открыть карту</button>
-            <button className="changeTagsButton flex g8"><TagsIcon /> Изменить метки</button>
+            <button className={`changeTagsButton flex g8 ${!isEditingTags ? "" : "active"}`} onClick={() => {setIsEditingTags((prev) => !prev)}}><TagsIcon /> Изменить метки</button>
             <button className="selectUserButton flex g8"><UnknowUserIcon /> Назначить исполнителя</button>
             <button className="selectDeadlineButton flex g8"><TimeAddIcon /> Указать дедлайн</button>
             <button className="copyButton flex g8"><CopyIcon /> Копировать</button>
             <button className="archiveButton flex g8"><ArchiveIcon /> Архивировать</button>
             <button className="deleteButton flex g8"><TrashIcon /> Удалить</button>
+
+            {isEditingTags && (
+                <ChangeTagsDropDownMenu onClose={handleCloseDropDown} task={task} />
+            )}
         </div>
         </>
     )

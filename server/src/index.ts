@@ -7,6 +7,7 @@ import usersRoutes from "../src/routes/users"
 import boardsRoutes from "../src/routes/boards"
 import columnsRoutes from "./routes/columns"
 import tasksRoutes from "./routes/tasks"
+import tagsRoutes from "./routes/tags"
 import "./models"
 
 dotenv.config();
@@ -20,6 +21,7 @@ app.use("/api/users", usersRoutes);
 app.use("/api/boards", boardsRoutes);
 app.use("/api/columns", columnsRoutes);
 app.use("/api/tasks", tasksRoutes);
+app.use("/api/tags", tagsRoutes);
 
 async function startServer() {
     try {
