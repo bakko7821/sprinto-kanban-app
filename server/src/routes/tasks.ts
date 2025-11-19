@@ -58,8 +58,40 @@ router.get("/columnId/:id", authMiddleware, async(req: AuthRequest, res: Respons
     }
 })
 
+router.put("/:id/update-position", authMiddleware, async(req: AuthRequest, res: Response) => {
+    const userId = (req.user as any)?.id;
+
+    if (!userId) {
+        return res.status(400).json({ message: "Некорректный токен" });
+    }
+
+    try {
+        const { id } = req.params;
+        const { columnId } = req.body;
+
+        if (!columnId) {
+            return res.status(400).json({ message: "Столбец не передан или передан не коректно" });
+        }
+
+        const task = await Task.findByPk(id);
+        if (!task) {
+            return res.status(404).json({ message: "Задача не найдена" });
+        }
+
+        await task.update({
+            columnId: columnId
+        });
+
+        res.json(task);
+    } catch (error: unknown) {
+        console.error(error);
+        res.status(500).json({ message: "Ошибка при изменении положения задачи" });
+    }
+})
+
 router.put("/:id", authMiddleware, async (req: AuthRequest, res: Response) => {
     const userId = (req.user as any)?.id;
+
     if (!userId) {
         return res.status(400).json({ message: "Некорректный токен" });
     }

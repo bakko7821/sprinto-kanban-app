@@ -3,6 +3,7 @@ import type { Tag, Task } from "../../utils/types";
 import { ArchiveIcon, CrossIcon, DoneIcon, EditIcon2 } from "../../assets/icons";
 import { EditTaskDropDownMenu } from "./DropDownMenus/EditTaskDropDownMenu";
 import axios from "axios";
+import { useDraggable } from "@dnd-kit/core";
 
 interface TaskComponentsProps {
     task: Task;
@@ -11,6 +12,10 @@ interface TaskComponentsProps {
 }
 
 export const TaskComponent = ({task, onDone, onUpdate}: TaskComponentsProps) => {
+    const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
+        id: task.id,
+    });
+
     const [isDone, setIsDone] = useState(false)
     const [isEdit, setIsEdit] = useState(false)
     const [taskName, setTaskName] = useState("")
@@ -38,7 +43,6 @@ export const TaskComponent = ({task, onDone, onUpdate}: TaskComponentsProps) => 
         onUpdate(task.id, {
             name: taskName,
             deadline,
-            tags: tags,
             isDone
         });
 
@@ -67,16 +71,16 @@ export const TaskComponent = ({task, onDone, onUpdate}: TaskComponentsProps) => 
         }
     }
 
-    useEffect(() => {
-        if (task.tags && task.tags.length > 0) {
-            loadTagsByIds(task.tags);
-        }
-    }, [task.tags]);
-
     return (
         <>
         {!isEdit ? (null) : (<div className="backgroundBlur"></div>)}
-        <div ref={taskRef} className={`taskComponent flex-column g6 ${!isEdit ? "" : "active"}`}>
+        <div
+            ref={setNodeRef}
+            {...listeners}
+            {...attributes}
+            draggable={true}
+            className={`taskComponent ${isDragging ? "dragging" : ""}`}
+        >
             {!isDone ? (
                 <div className="buttonsBox flex-center g4">
                     <button 

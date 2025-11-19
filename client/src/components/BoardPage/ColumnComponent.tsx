@@ -4,17 +4,20 @@ import type { Task, Column } from "../../utils/types";
 import axios from "axios";
 import { TaskComponent } from "./TaskComponent";
 import { ColumnDropDownMenu } from "./DropDownMenus/ColumnDropDownMenu";
+import { useDraggable, useDroppable } from "@dnd-kit/core";
 
 interface ColumnComponentProps {
     column: Column;
-    onDelete: (id: number) => void;
+    tasks: Task[]; // массив задач этой колонки
+    onDelete: (id: number) => void; // удаление колонки
+    onTasksChange: (newTasks: Task[]) => void; // обновление задач после drag-and-drop
 }
 
-export const ColumnComponent = ({ column, onDelete }: ColumnComponentProps) => {
+export const ColumnComponent = ({ column, tasks, onDelete, onTasksChange }: ColumnComponentProps) => {
+    const { setNodeRef: setDroppableRef } = useDroppable({ id: column.id });
     const [isAdding, setIsAdding] = useState(false)
     const [isOpenMenu, setIsOpenMenu] = useState(false)
     const [taskName, setTaskName] = useState("")
-    const [tasks, setTasks] = useState<Task[]>([])
 
     const token = localStorage.getItem("token")
     const userId = localStorage.getItem("userId")
@@ -36,37 +39,11 @@ export const ColumnComponent = ({ column, onDelete }: ColumnComponentProps) => {
             setTaskName("");
             setIsAdding(false);
 
-            const res = await axios.get(
-                `http://localhost:5000/api/tasks/columnId/${column.id}`,
-                {
-                    headers: { Authorization: `Bearer ${token}` },
-                }
-            );
-            setTasks(res.data);
-
         } catch (err) {
             console.error("Ошибка при создании задачи:", err);
         }
     }
 
-    useEffect(() => {
-        async function fetchTasks() {
-            try {
-                const res = await axios.get(
-                    `http://localhost:5000/api/tasks/columnId/${column.id}`,
-                    {
-                        headers: { Authorization: `Bearer ${token}` },
-                    }
-                );
-
-                setTasks(res.data);
-            } catch (err) {
-                console.error("Ошибка при создании задачи:", err);
-            }
-        }
-
-        fetchTasks()
-    }, [])
 
     const handleDoneTask = () => {
         console.log('Выбрана задача')
@@ -76,10 +53,6 @@ export const ColumnComponent = ({ column, onDelete }: ColumnComponentProps) => {
         await axios.put(`http://localhost:5000/api/tasks/${id}`, updated, {
             headers: { Authorization: `Bearer ${token}` }
         });
-
-        setTasks(prev =>
-            prev.map(t => t.id === id ? { ...t, ...updated } : t)
-        );
     };
 
     const handleCloseMenu = () => {
@@ -110,9 +83,16 @@ export const ColumnComponent = ({ column, onDelete }: ColumnComponentProps) => {
                 <span className="columnName">{column.name}</span>
                 <button className="moreButton" onClick={() => {setIsOpenMenu((prev) => !prev)}}><MoreIcon /></button>
             </div>
-            <div className="taskList flex-column g8">
+            <div ref={setDroppableRef} className="taskList flex-column g8">
                 {tasks.map((task) => {
-                    return <TaskComponent task={task} onDone={handleDoneTask} key={task.id} onUpdate={updateTask}/>
+                    return (
+                        <TaskComponent
+                            key={task.id}
+                            task={task}
+                            onDone={handleDoneTask}
+                            onUpdate={updateTask}
+                        />
+                    );
                 })}
             </div>
             {!isAdding ? (
