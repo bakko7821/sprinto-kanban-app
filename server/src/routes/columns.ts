@@ -55,4 +55,22 @@ router.get("/boardId/:id", authMiddleware, async(req: AuthRequest, res: Response
     }
 })
 
+router.delete("/:id", authMiddleware, async(req: AuthRequest, res: Response) => {
+    const userId = (req.user as any)?.id;
+    
+    if (!userId) {
+      return res.status(400).json({ message: "Некорректный токен" });
+    }
+
+    try {
+        const id = Number(req.params.id)
+
+        await Column.destroy({ where: { id } });
+
+    } catch (error: unknown) {
+        console.error(error);
+        res.status(500).json({ message: "Ошибка при удалении колонки" });
+    }
+})
+
 export default router

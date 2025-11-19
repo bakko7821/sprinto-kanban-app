@@ -3,13 +3,16 @@ import { AddIcon, CrossIcon, MoreIcon } from "../../assets/icons";
 import type { Task, Column } from "../../utils/types";
 import axios from "axios";
 import { TaskComponent } from "./TaskComponent";
+import { ColumnDropDownMenu } from "./DropDownMenus/ColumnDropDownMenu";
 
 interface ColumnComponentProps {
     column: Column;
+    onDelete: (id: number) => void;
 }
 
-export const ColumnComponent = ({ column }: ColumnComponentProps) => {
+export const ColumnComponent = ({ column, onDelete }: ColumnComponentProps) => {
     const [isAdding, setIsAdding] = useState(false)
+    const [isOpenMenu, setIsOpenMenu] = useState(false)
     const [taskName, setTaskName] = useState("")
     const [tasks, setTasks] = useState<Task[]>([])
 
@@ -79,11 +82,33 @@ export const ColumnComponent = ({ column }: ColumnComponentProps) => {
         );
     };
 
+    const handleCloseMenu = () => {
+        setIsOpenMenu(false)
+    }
+
+    const handleDeleteColumn = async () => {
+        if (!token) return;
+
+        try {
+            
+            onDelete(column.id);
+            setIsOpenMenu(false);
+            
+            await axios.delete(
+                `http://localhost:5000/api/columns/${column.id}`,
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+
+        } catch (err) {
+            console.error("Ошибка при удалении колонки:", err);
+        }
+    };
+
     return (
         <div className="column flex-column g12">
             <div className="columnHeader flex-between">
                 <span className="columnName">{column.name}</span>
-                <button className="moreButton"><MoreIcon /></button>
+                <button className="moreButton" onClick={() => {setIsOpenMenu((prev) => !prev)}}><MoreIcon /></button>
             </div>
             <div className="taskList flex-column g8">
                 {tasks.map((task) => {
@@ -109,6 +134,10 @@ export const ColumnComponent = ({ column }: ColumnComponentProps) => {
                         <button className="closeFormButton flex-center" onClick={() => {setIsAdding((prev) => !prev)}}><CrossIcon /></button>
                     </div>
                 </form>
+            )}
+
+            {!isOpenMenu ? null : (
+                <ColumnDropDownMenu onClose={handleCloseMenu} onDelete={handleDeleteColumn}/>
             )}
         </div>
     )

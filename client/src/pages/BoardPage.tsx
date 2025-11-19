@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom"
 import type { Board, Column } from "../utils/types"
 import axios from "axios"
 import "../styles/boardPage.scss"
-import { AddIcon, CrossIcon, DoneIcon, EditIcon, HammerIcon, HeartIcon, MoreIcon, SortIcon, UsersIcon } from "../assets/icons"
+import { AddIcon, ArchiveIcon, CrossIcon, DoneIcon, EditIcon, HammerIcon, HeartIcon, MoreIcon, SortIcon, UsersIcon } from "../assets/icons"
 import { ColumnComponent } from "../components/BoardPage/ColumnComponent"
 
 export const BoardPage = () => {
@@ -96,6 +96,11 @@ export const BoardPage = () => {
         }
     };
 
+    const handleDeleteColumn = (columnId: number) => {
+        console.log("Удаляем колонку:", columnId);
+        setColumns(prev => prev.filter(c => c.id !== columnId));
+    };
+
     return (
         <div className="boardPage flex-column">
             <div className="headerBox flex-between">
@@ -115,6 +120,7 @@ export const BoardPage = () => {
                 )}
                 <nav className="flex-center g8">
                     <button className="upgradeButton"><EditIcon /></button>
+                    <button className="archiveButton"><ArchiveIcon /></button>
                     <button className="autoButton" id="hammerButton"><HammerIcon /></button>
                     <button className="sortButton"><SortIcon /></button>
                     <button className="favoriteButton"><HeartIcon /></button>
@@ -125,7 +131,10 @@ export const BoardPage = () => {
             </div>
             <div className="columnsBox flex g16">
                 {columns.map((column) => {
-                    return <ColumnComponent column={column} key={column.id} />;
+                    return <ColumnComponent 
+                                column={column} 
+                                key={column.id}
+                                onDelete={handleDeleteColumn}/>;
                 })}
                 {!isAdding ? (
                     <button className="addColumnButton flex-center g8" onClick={() => {setIsAdding((prev) => !prev)}}>
