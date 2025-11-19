@@ -7,12 +7,12 @@ import axios from "axios";
 interface ChangeTagsDropDownMenuProps {
     onClose: () => void;
     task: Task;
-    onChangeTags: (tags: number[]) => void;
+    onChangeTags: (ids: number[]) => void;
 }
 
 export const ChangeTagsDropDownMenu = ({onClose, task, onChangeTags}: ChangeTagsDropDownMenuProps) => {
     const [isCreatingNewTag, setIsCreatingNewTag] = useState(false)
-    const [selectedTags, setSelectedTags] = useState<number[]>(task.tags || []);
+    const [selectedTags, setSelectedTags] = useState<number[]>([]);
     const [newTagName, setIsNewTagName] = useState("")
     const [newTagColor, setIsNewTagColor] = useState("")
     const token = localStorage.getItem("token")

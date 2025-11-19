@@ -5,6 +5,7 @@ import axios from "axios";
 import { TaskComponent } from "./TaskComponent";
 import { ColumnDropDownMenu } from "./DropDownMenus/ColumnDropDownMenu";
 import { useDraggable, useDroppable } from "@dnd-kit/core";
+import './columnsComponent.scss'
 
 interface ColumnComponentProps {
     column: Column;

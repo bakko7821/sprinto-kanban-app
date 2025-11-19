@@ -41,6 +41,8 @@ export interface Task {
     deadline: string;
     isDone: boolean;
     columnId: number
+
+    tags: number[]
 }
 
 export interface Tag {

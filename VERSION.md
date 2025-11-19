@@ -139,3 +139,11 @@
 - Добавлена функция drag&drop, но реализованна не до конца
 - Сейчас не работают кнопки изменения
 - При переносе немного барахлят стили
+
+# commit 10.14.0
+
+- Починил перенос drag&drop
+- Вынес стили для taskComponent из **/styles/boardPage.scss** в **/components/BoardPage/taskComponent.scss**
+- Вынес стили для columnsComponent из **/styles/boardPage.scss** в **/components/BoardPage/columnsComponent.scss**
+
+- Теперь не работает функция добавления тегов. Нужно будет починить

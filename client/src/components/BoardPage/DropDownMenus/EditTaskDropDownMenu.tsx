@@ -7,7 +7,7 @@ interface EditTaskDropDownMenuProps {
     onClose: () => void;
     taskRef: React.RefObject<HTMLDivElement | null>;
     task: Task
-    onChangeTags: (tags: number[]) => void;
+    onChangeTags: (ids: number[]) => void;
 }
 
 export const EditTaskDropDownMenu = ({onClose, taskRef, task, onChangeTags}: EditTaskDropDownMenuProps ) => {
@@ -40,7 +40,12 @@ export const EditTaskDropDownMenu = ({onClose, taskRef, task, onChangeTags}: Edi
 
     return (
         <>
-        <div ref={menuRef} className="editTaskDropDownMenu flex-column g8">
+        <div 
+            ref={menuRef} 
+            className="editTaskDropDownMenu flex-column g8" 
+            onMouseDown={(e) => e.stopPropagation()}
+            onPointerDown={(e) => e.stopPropagation()}
+        >
             <button className="openButton flex g8"><OpenIcon /> Открыть карту</button>
             <button className={`changeTagsButton flex g8 ${!isEditingTags ? "" : "active"}`} onClick={() => {setIsEditingTags((prev) => !prev)}}><TagsIcon /> Изменить метки</button>
             <button className="selectUserButton flex g8"><UnknowUserIcon /> Назначить исполнителя</button>

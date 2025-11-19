@@ -1,0 +1,326 @@
+@use '../../styles/variables' as *;
+@use '../../styles/keyframes' as *;
+
+.taskComponent {
+    width: 100%;
+    padding: 8px;
+    border-radius: 12px;
+    background-color: $background-second-card-color;
+    transition: all 0.5s;
+    cursor: grab;
+    position: relative;
+
+    .taskTagsBox {
+        .tagPreview {
+            max-width: 48px;
+            width: 48px;
+            height: 8px;
+            border-radius: 12px;
+        }
+    }
+
+    .buttonsBox {
+        width: fit-content;
+        height: 100%;
+        border-radius: 12px;
+        background-color: rgba($color: #000000, $alpha: 0.3);
+        backdrop-filter: blur(1px);
+        position: absolute;
+        transition: all 0.5s;
+        right: 0px;
+        top: 0px;
+        opacity: 0;
+        padding: 8px;
+
+        button {
+            color: $button-text-color;
+            transition: all 0.5s;
+
+            &:hover {
+                svg {
+                    transform: rotate(30deg);
+                }
+            }
+        }
+    }
+
+    &:hover {
+        background-color: $background-card-hover-color;
+
+        .buttonsBox {
+            opacity: 1;
+        }
+    }
+
+    .checkbox {
+        cursor: pointer;
+        min-width: 20px;
+        width: 20px;
+        height: 20px;
+        border-radius: 100%;
+        border: 1px $text-color solid;
+        padding: 2px;
+    }
+    
+    .checkbox.active {
+        border: 1px $main-color solid;
+        background-color: $main-color;
+
+        svg {
+            color: $button-text-color;
+        }
+    }
+
+    .taskContent {
+        span {
+            width: fit-content;
+            font-size: $rem1;
+            color: $text-color;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        .editTaskForm {
+            width: 100%;
+
+            input {
+                padding: 8px;
+                font-size: $rem1;
+                color: $text-color;
+                line-height: 1.5;
+            }
+
+            .formButtonsBox {
+                width: 100%;
+
+                button {
+                    width: 100%;
+                    padding: 8px;
+                    border-radius: 12px;
+                    transition: all 0.5s;
+                }
+
+                button.createTaskButton {
+                    background-color: $main-color;
+                    color: $button-text-color;
+
+                    &:hover {
+                        background-color: $main-hover-color;
+
+                        svg {
+                            transform: rotate(30deg);
+                        }
+                    }
+                }
+
+                button.closeFormButton {
+                    background-color: #D49F9F;
+                    color: #A80303;
+
+                    &:hover {
+                        background-color: #C47C7C;
+
+                        svg {
+                            transform: rotate(30deg);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .editTaskDropDownMenu {
+        left: calc(100% + 8px);
+        top: 0px;
+        z-index: 100;
+        position: absolute;
+
+        button {
+            align-items: center;
+            border-radius: 12px;
+            white-space: nowrap;
+            font-size: $rem1;
+            font-weight: 500;
+            color: $text-color;
+            line-height: 1.5;
+            padding: 8px;
+            background-color: $background-card-color;
+            transition: all 0.5s;
+
+            &:hover {
+                background-color: $background-card-hover-color;
+
+                svg {
+                    transform: rotate(30deg);
+                }
+            }
+        }
+
+        button.deleteButton {
+            &:hover {
+                background-color: #D49F9F;
+                color: #A80303;
+
+                svg {
+                    transform: rotate(30deg);
+                    color: #A80303;
+                }
+            }
+        }
+
+        .changeTagsButton.active {
+            background-color: $main-color;
+            color: $button-text-color;
+        }
+
+        .changeTagsDropDownMenu {
+            cursor: default;
+            min-width: 100%;
+            width: fit-content;
+            position: absolute;
+            left: 0;
+            top: 96px;
+            z-index: 100;
+            background-color: $background-card-color;
+            border-radius: 12px 20px 20px 20px;
+            padding: 16px;
+
+            .changeTagsHeader {
+                align-items: center;
+                width: 100%;
+
+                span {
+                    white-space: nowrap;
+                    font-size: $rem1-5;
+                    color: $text-color;
+                    font-weight: 500;
+                    line-height: 1.4;
+                }
+
+                .closeMenu {
+                    padding: 4px;
+                }
+            }
+
+            .tagsList {
+                .tagComponent {
+                    width: 100%;
+
+                    .tagContent {
+                        width: 100%;
+                        padding: 6px;
+                        border-radius: 12px;
+                        font-size: $rem1;
+                        color: $button-text-color;
+                        font-weight: 500;
+                        line-height: 1.5;
+                    }
+                }
+            }
+
+            .createTagButton {
+                padding: 8px 16px;
+                background-color: $background-color;
+                font-size: $rem1;
+                color: $text-color;
+                line-height: 1.5;
+                transition: all 0.5s;
+
+                &:hover {
+                    background-color: $background-card-hover-color;
+                }
+            }
+        }
+
+        .changeTagsDropDownMenu.edit {
+            padding: 0;
+
+            .changeTagsHeader {
+                padding: 8px;
+            }
+
+            .newTagPreview {
+                background-color: $background-card-hover-color;
+                padding: 32px;
+
+                .newTagComponent {
+                    align-items: center;
+                    min-height: 36px;
+                    width: 100%;
+                    padding: 4px;
+                    border-radius: 12px;
+                    font-size: $rem1;
+                    color: $button-text-color;
+                    line-height: 1.5;
+                    font-weight: 500;
+                }
+            }
+
+            .newTagForm {
+                padding: 8px;
+                
+                input {
+                    padding: 8px;
+                    border-radius: 12px;
+                    border: 2px $second-text-color solid;
+                    font-size: $rem1;
+                    color: $text-color;
+                    font-weight: 400;
+                    line-height: 1.5;
+                }
+
+                .colorsList {
+                    width: 100%;
+                    display: grid;
+                    grid-template-columns: repeat(5, 1fr);
+                    grid-template-rows: repeat(6, 1fr);
+                    gap: 8px;
+                }
+
+                .color {
+                    width: 100%;
+                    height: 28px;
+                    border-radius: 6px; /* для лёгкого скругления */
+                    cursor: pointer;
+                    transition: transform 0.15s ease, box-shadow 0.15s ease;
+                }
+
+                .color.selected {
+                    border: 2px $text-color solid;
+                }
+
+                .color:hover {
+                    transform: scale(1.12);
+                    box-shadow: 0 0 4px rgba(0,0,0,0.3);
+                }
+            }
+        }
+    }
+}
+
+.taskComponent.dragging {
+    visibility: hidden;
+    opacity: 0.8;
+    transform: scale(1.03);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+    cursor: grabbing !important;
+    z-index: 999;
+}
+
+
+.taskComponent.active {
+    position: relative;
+    z-index: 100 !important;
+
+    .buttonsBox {
+        opacity: 0 !important;
+    }
+}
+
+.taskComponent.edited {
+    z-index: 999 !important;
+
+    .buttonsBox {
+        opacity: 0 !important;
+    }
+}

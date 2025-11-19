@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import type { Tag, Task } from "../../utils/types";
 import { ArchiveIcon, CrossIcon, DoneIcon, EditIcon2 } from "../../assets/icons";
 import { EditTaskDropDownMenu } from "./DropDownMenus/EditTaskDropDownMenu";
 import axios from "axios";
 import { useDraggable } from "@dnd-kit/core";
+import './taskComponent.scss'
 
 interface TaskComponentsProps {
     task: Task;
@@ -12,20 +13,25 @@ interface TaskComponentsProps {
 }
 
 export const TaskComponent = ({task, onDone, onUpdate}: TaskComponentsProps) => {
-    const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
-        id: task.id,
-    });
-
     const [isDone, setIsDone] = useState(false)
     const [isEdit, setIsEdit] = useState(false)
     const [taskName, setTaskName] = useState("")
     const [deadline, setDeadline] = useState("")
-    const [tags, setTags] = useState<number[]>([])
+    const [tagsId, setTagsId] = useState<number[]>(task.tags)
     const [renderTags, setRenderTags] = useState<Tag[]>([]);
-    const taskRef = useRef<HTMLDivElement | null>(null);
+
+    const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
+        id: task.id,
+        disabled: isEdit,
+    });
 
     useEffect(() => {
         setTaskName(`${task.name}`)
+    }, [])
+
+    useEffect(() => {
+        console.log(tagsId)
+        loadTagsByIds(tagsId)
     }, [])
 
     const handleDone = () => {
@@ -61,30 +67,49 @@ export const TaskComponent = ({task, onDone, onUpdate}: TaskComponentsProps) => 
             );
 
             const responses = await Promise.all(requests);
-
             const tagsData = responses.map(res => res.data);
 
             setRenderTags(tagsData);
-
         } catch (err) {
             console.error("Ошибка при загрузке тегов:", err);
         }
+    }
+
+    type PossibleRef<T> = React.Ref<T> | undefined;
+
+    const taskRef = useRef<HTMLDivElement | null>(null);
+
+    function mergeRefs<T>(...refs: PossibleRef<T>[]) {
+        return (value: T) => {
+            refs.forEach(ref => {
+            if (!ref) return;
+
+            if (typeof ref === "function") {
+                ref(value);
+            } else {
+                // @ts-ignore — TS иногда тупит, но логика корректна
+                ref.current = value;
+            }
+            });
+        };
     }
 
     return (
         <>
         {!isEdit ? (null) : (<div className="backgroundBlur"></div>)}
         <div
-            ref={setNodeRef}
+            ref={mergeRefs<HTMLDivElement>(taskRef, setNodeRef)}
             {...listeners}
             {...attributes}
             draggable={true}
-            className={`taskComponent ${isDragging ? "dragging" : ""}`}
+            className={`taskComponent ${isDragging ? "dragging" : ""} ${isEdit ? "edited" : ""}`}
         >
             {!isDone ? (
                 <div className="buttonsBox flex-center g4">
                     <button 
                         className="editButton flex-center" 
+                        onMouseDown={(e) => e.stopPropagation()}
+                        onPointerDown={(e) => e.stopPropagation()}
                         onClick={() => setIsEdit((prev) => !prev)}>
                             <EditIcon2 />
                     </button>
@@ -94,31 +119,42 @@ export const TaskComponent = ({task, onDone, onUpdate}: TaskComponentsProps) => 
                     <button className="archiveButton flex-center"><ArchiveIcon /></button>
                     <button 
                         className="editButton flex-center" 
+                        onMouseDown={(e) => e.stopPropagation()}
+                        onPointerDown={(e) => e.stopPropagation()}
                         onClick={() => setIsEdit((prev) => !prev)}>
                             <EditIcon2 />
                     </button>
                 </div>
             )}
             <div className="taskTagsBox flex g6">
-                {renderTags.map(tag => (
+                {renderTags.map((tag, index) => (
                     <div
-                        key={tag.id}
+                        key={tag.id ?? `tag-${index}`}
                         className="tagPreview"
                         style={{ backgroundColor: tag.color }}
-                    >
-                    </div>
+                    />
                 ))}
             </div>
             <div className="taskContent flex g4">
                 {!isEdit ? (
                     <>
-                    <div className={`checkbox flex-center ${!isDone ? "" : "active"}`} onClick={() => handleDone()}>
+                    <div 
+                        className={`checkbox flex-center ${!isDone ? "" : "active"}`} 
+                        onMouseDown={(e) => e.stopPropagation()} 
+                        onPointerDown={(e) => e.stopPropagation()} 
+                        onClick={() => handleDone()}
+                    >
                         {!isDone ? null : <DoneIcon />}
                     </div>
                     <span>{task.name}</span>
                     </>
                 ) : (
-                    <form className="editTaskForm flex-column g4" onSubmit={handleSaveChanges}>
+                    <form 
+                        className="editTaskForm flex-column g4" 
+                        onSubmit={handleSaveChanges}
+                        onMouseDown={(e) => e.stopPropagation()}
+                        onPointerDown={(e) => e.stopPropagation()}
+                    >
                         <input 
                             type="text" 
                             className="editTaskInput"
@@ -127,9 +163,13 @@ export const TaskComponent = ({task, onDone, onUpdate}: TaskComponentsProps) => 
                         />
                         <div className="formButtonsBox flex-center g8">
                             <button 
+                                onMouseDown={(e) => e.stopPropagation()}
+                                onPointerDown={(e) => e.stopPropagation()}
                                 className="createTaskButton flex-center" 
                                 onClick={() => handleSaveChanges}><DoneIcon /></button>
                             <button 
+                                onMouseDown={(e) => e.stopPropagation()}
+                                onPointerDown={(e) => e.stopPropagation()}
                                 className="closeFormButton flex-center" 
                                 onClick={() => {setIsEdit((prev) => !prev)}}><CrossIcon /></button>
                         </div>
@@ -140,7 +180,7 @@ export const TaskComponent = ({task, onDone, onUpdate}: TaskComponentsProps) => 
             {!isEdit ? (
                 null
             ) : (
-                <EditTaskDropDownMenu onClose={handleCloseDropDownMenu} taskRef={taskRef} task={task} onChangeTags={(ids) => setTags(ids)}/>
+                <EditTaskDropDownMenu onClose={handleCloseDropDownMenu} taskRef={taskRef} task={task} onChangeTags={(ids) => setTagsId(ids)}/>
             )}
         </div>
         </>
