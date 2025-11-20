@@ -72,7 +72,6 @@ export const DropDownCreateBoard = ({ onClose }: DropDownCreateBoardProps) => {
                         value={boardName}
                         onChange={(e) => setBoardName(e.target.value)} 
                         placeholder="My Board"/>
-                    <span>👋 Укажите название доски.</span>
                 </div>
                 <div className="plug"></div>
                 <div className="visibilityBox flex-column g4">

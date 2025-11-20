@@ -15,7 +15,7 @@ export const VisibilitySelect = ({ value, onChange }: VisibilitySelectProps) => 
   ];
 
   return (
-    <div className="visibilitySelect">
+    <div className="visibilitySelect flex-column g4">
       <div className="selected flex-between" onClick={() => setOpen(!open)}>
         <div className="leftBox flex-center g8">
             {
@@ -27,7 +27,7 @@ export const VisibilitySelect = ({ value, onChange }: VisibilitySelectProps) => 
       </div>
 
       {open && (
-        <ul className="dropdown">
+        <ul className="dropdown flex-column g4">
           {options.map((opt) => (
             <li
               key={opt.value}

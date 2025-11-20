@@ -8,7 +8,9 @@ import boardsRoutes from "../src/routes/boards"
 import columnsRoutes from "./routes/columns"
 import tasksRoutes from "./routes/tasks"
 import tagsRoutes from "./routes/tags"
+import uploadRouter from "./routes/upload"
 import "./models"
+import path from "path";
 
 dotenv.config();
 
@@ -22,6 +24,8 @@ app.use("/api/boards", boardsRoutes);
 app.use("/api/columns", columnsRoutes);
 app.use("/api/tasks", tasksRoutes);
 app.use("/api/tags", tagsRoutes);
+app.use("/api/upload", uploadRouter);
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 async function startServer() {
     try {
@@ -41,6 +45,8 @@ async function startServer() {
         process.exit(1);
     }
 }
+
+
 
 startServer();
 

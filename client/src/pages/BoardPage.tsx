@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useParams } from "react-router-dom"
 import type { Board, Column, Task } from "../utils/types"
 import axios from "axios"
 import "../styles/boardPage.scss"
-import { AddIcon, ArchiveIcon, CrossIcon, DoneIcon, EditIcon, HammerIcon, HeartIcon, MoreIcon, SortIcon, UsersIcon } from "../assets/icons"
+import { AddIcon, ArchiveIcon, CrossIcon, DoneIcon, EditIcon, EditIcon2, EditIcon3, HammerIcon, HeartIcon, ImageIcon, KeyIcon, LockIcon, MoreIcon, SortIcon, UsersIcon } from "../assets/icons"
 import { ColumnComponent } from "../components/BoardPage/ColumnComponent"
 import { closestCenter, DndContext, DragOverlay, type DragEndEvent, } from "@dnd-kit/core"
 import { TaskComponent } from "../components/BoardPage/TaskComponent"
@@ -16,9 +16,10 @@ export const BoardPage = () => {
     const [activeTask, setActiveTask] = useState<Task | null>(null);
     const [boardName, setBoardName] = useState("")
     const [columnName, setColumnName] = useState("")
+    const [backgroundImage, setBackgroundImage] = useState("")
     const [editingName, setEditingName] = useState(false)
     const [isAdding, setIsAdding] = useState(false)
-    
+    const [editIsPrivate, setEditIsPrivate] = useState(false)
 
     const token = localStorage.getItem("token")
     const userId: string | null = localStorage.getItem("userId")
@@ -39,6 +40,8 @@ export const BoardPage = () => {
 
                 setBoard(res.data);
                 setBoardName(res.data.name)
+                setEditIsPrivate(res.data.isPrivate)
+                setBackgroundImage(res.data.backgroundImage)
             } catch (err) {
                 console.error("Ошибка при загрузке пользователя:", err);
             }
@@ -81,12 +84,66 @@ export const BoardPage = () => {
         fetchColumnsAndTasks();
     }, [board?.id, token, userId]);
 
-    
-    const handleSaveChange = (e: React.FormEvent<HTMLFormElement>) => {
+    const [backgroundUrl, setBackgroundUrl] = useState<string | null>(null);
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+    const handleUploadBackground = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append("image", file);
+
+        const response = await fetch("http://localhost:5000/api/upload/image", {
+            method: "POST",
+            body: formData,
+        });
+
+        const data = await response.json();
+        const uploadedUrl = data.url;
+        console.log(uploadedUrl)
+
+        setBackgroundUrl(uploadedUrl);
+    };
+
+    const handleSaveChange = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log("saveChanges")
+
         setEditingName(false)
-    }
+
+        if (!token || !userId || !board?.id) return;
+
+        try {
+            await axios.put(
+                `http://localhost:5000/api/boards/${board.id}`,
+                {   name: boardName,
+                    isPrivate: editIsPrivate,
+                    backgroundImage: backgroundUrl
+                },
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            );
+
+            setBoardName("");
+            setIsAdding(false);
+
+            const res = await axios.get(
+                `http://localhost:5000/api/boards/${board.id}`,
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            );
+
+            setBoard(res.data);
+            setBoardName(res.data.name)
+            setEditIsPrivate(res.data.isPrivate)
+            setBackgroundImage(res.data.backgroundImage)
+
+        } catch (err) {
+            console.error("Ошибка при создании колонки:", err);
+        }
+    };
 
     const handleCreateColumn = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -193,12 +250,21 @@ export const BoardPage = () => {
 
 
     return (
-        <div className="boardPage flex-column">
+        <div
+            className="boardPage flex-column"
+            style={{
+                backgroundImage: backgroundImage ? `url(http://localhost:5000${backgroundImage})` : undefined,
+                backgroundSize: 'cover',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center',
+                backdropFilter: 'blur(6px)', 
+            }}
+        >
             <div className="headerBox flex-between">
                 {!editingName ? (
                     <span className="nameText" onClick={() => {setEditingName((prev) => !prev)}}>{board?.name}</span>
                 ) : (
-                    <form className="changeNameForm flex-center g8" onSubmit={handleSaveChange}>
+                    <form className="changeNameForm flex-center g12" onSubmit={handleSaveChange}>
                         <input 
                         type="text"
                         className="changeNameInput"
@@ -206,11 +272,46 @@ export const BoardPage = () => {
                         value={boardName}
                         onChange={(e) => setBoardName(e.target.value)} />
 
-                        <button className="saveChangeNameButton" onClick={() => handleSaveChange}><DoneIcon /></button>
+                        <label htmlFor="">Приватность доски: <span>{editIsPrivate ? 'Приватная' : 'Открытая'}</span></label>
+                        <button
+                            className="changePrivacyButton"
+                            type="button"
+                            onClick={() => setEditIsPrivate((prev) => !prev)}
+                        >
+                            {editIsPrivate ? <KeyIcon /> : <LockIcon />}
+                        </button>
+
+                        <input
+                            type="file"
+                            id="backgroundUploadInput"
+                            ref={fileInputRef}
+                            style={{ display: "none" }}
+                            accept="image/*"
+                            onChange={handleUploadBackground}
+                        />
+                        <button
+                            className="changeBackgroundButton"
+                            type="button"
+                            onClick={() => fileInputRef.current?.click()}
+                        >
+                            <ImageIcon />
+                        </button>
+
+                        <div className="buttonsBox flex g4">
+                            <button className="saveChangeNameButton" type="submit">
+                                <DoneIcon />
+                            </button>
+                            <button 
+                                className="closeEditFormButton"
+                                type="button" 
+                                onClick={() => {setEditingName((prev) => !prev)}}>
+                                <CrossIcon />
+                            </button>
+                        </div>
                     </form>
                 )}
                 <nav className="flex-center g8">
-                    <button className="upgradeButton"><EditIcon /></button>
+                    <button className="upgradeButton"><EditIcon3 /></button>
                     <button className="archiveButton"><ArchiveIcon /></button>
                     <button className="autoButton" id="hammerButton"><HammerIcon /></button>
                     <button className="sortButton"><SortIcon /></button>
