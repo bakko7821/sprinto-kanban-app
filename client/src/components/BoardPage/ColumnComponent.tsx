@@ -9,12 +9,15 @@ import './columnsComponent.scss'
 
 interface ColumnComponentProps {
     column: Column;
-    tasks: Task[]; // массив задач этой колонки
-    onDelete: (id: number) => void; // удаление колонки
-    onTasksChange: (newTasks: Task[]) => void; // обновление задач после drag-and-drop
+    tasks: Task[];
+    onTasksChange: (tasks: Task[]) => void;
+    onAddTask: (columnId: number, task: Task) => void;
+    onDeleteTask: (id: number) => void;
+    onDeleteColumn: (id: number) => void;
 }
 
-export const ColumnComponent = ({ column, tasks, onDelete, onTasksChange }: ColumnComponentProps) => {
+
+export const ColumnComponent = ({ column, tasks, onAddTask, onDeleteColumn, onDeleteTask, onTasksChange }: ColumnComponentProps) => {
     const { setNodeRef: setDroppableRef } = useDroppable({ id: column.id });
     const [isAdding, setIsAdding] = useState(false)
     const [isOpenMenu, setIsOpenMenu] = useState(false)
@@ -29,7 +32,7 @@ export const ColumnComponent = ({ column, tasks, onDelete, onTasksChange }: Colu
         if (!token || !userId || !column?.id) return;
 
         try {
-            await axios.post(
+            const res = await axios.post(
                 `http://localhost:5000/api/tasks/${column.id}`,
                 { name: taskName },
                 {
@@ -37,24 +40,44 @@ export const ColumnComponent = ({ column, tasks, onDelete, onTasksChange }: Colu
                 }
             );
 
+            const newTask: Task = res.data; // сервер вернёт объект задачи
+
+            // ⬅️ Добавляем задачу в BoardPage
+            onAddTask(column.id, newTask);
+
             setTaskName("");
             setIsAdding(false);
 
         } catch (err) {
             console.error("Ошибка при создании задачи:", err);
         }
-    }
-
+    };
 
     const handleDoneTask = () => {
         console.log('Выбрана задача')
     }
 
     const updateTask = async (id: number, updated: Partial<Task>) => {
-        await axios.put(`http://localhost:5000/api/tasks/${id}`, updated, {
-            headers: { Authorization: `Bearer ${token}` }
-        });
+        try {
+            const response = await axios.put(
+                `http://localhost:5000/api/tasks/${id}`,
+                updated,
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+
+            const updatedTask = response.data;
+
+            const newTaskList = tasks.map(t =>
+                t.id === id ? updatedTask : t
+            );
+
+            onTasksChange(newTaskList);
+
+        } catch (err) {
+            console.error("Ошибка при обновлении задачи", err);
+        }
     };
+
 
     const handleCloseMenu = () => {
         setIsOpenMenu(false)
@@ -65,7 +88,7 @@ export const ColumnComponent = ({ column, tasks, onDelete, onTasksChange }: Colu
 
         try {
             
-            onDelete(column.id);
+            onDeleteColumn(column.id);
             setIsOpenMenu(false);
             
             await axios.delete(
@@ -92,6 +115,7 @@ export const ColumnComponent = ({ column, tasks, onDelete, onTasksChange }: Colu
                             task={task}
                             onDone={handleDoneTask}
                             onUpdate={updateTask}
+                            onDeleteTask={onDeleteTask}
                         />
                     );
                 })}

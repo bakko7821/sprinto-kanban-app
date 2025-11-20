@@ -12,12 +12,11 @@ interface ChangeTagsDropDownMenuProps {
 
 export const ChangeTagsDropDownMenu = ({onClose, task, onChangeTags}: ChangeTagsDropDownMenuProps) => {
     const [isCreatingNewTag, setIsCreatingNewTag] = useState(false)
-    const [selectedTags, setSelectedTags] = useState<number[]>([]);
+    const [selectedTags, setSelectedTags] = useState<number[]>(task.tags);
     const [newTagName, setIsNewTagName] = useState("")
     const [newTagColor, setIsNewTagColor] = useState("")
     const token = localStorage.getItem("token")
     const userId = localStorage.getItem("userId")
-    
     const [tags, setTags] = useState<Tag[]>([])
 
     const handleCreateTag = async (e: React.FormEvent) => {
@@ -72,16 +71,15 @@ export const ChangeTagsDropDownMenu = ({onClose, task, onChangeTags}: ChangeTags
     }, [])
 
     const handleSelect = (id: number) => {
-        let updated;
+        setSelectedTags(prev => {
+            const updated = prev.includes(id)
+                ? prev.filter(t => t !== id)
+                : [...prev, id];
 
-        if (selectedTags.includes(id)) {
-            updated = selectedTags.filter(t => t !== id);
-        } else {
-            updated = [...selectedTags, id];
-        }
-
-        setSelectedTags(updated);
-        onChangeTags(updated);
+            console.log(updated)
+            onChangeTags(updated);
+            return updated;
+        });
     };
 
     return (
@@ -139,7 +137,7 @@ export const ChangeTagsDropDownMenu = ({onClose, task, onChangeTags}: ChangeTags
                         onChange={(e) => setIsNewTagName(e.target.value)}/>
                     <label htmlFor="color">Цвет</label>
                     <PickColor onSelect={setIsNewTagColor}/>
-                    <button className="createNewTagButton flex-center" onClick={() => handleCreateTag}>Создать новую метку</button>
+                    <button className="createNewTagButton flex-center" onClick={handleCreateTag}>Создать новую метку</button>
                 </form>
                 </>
             )}

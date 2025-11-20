@@ -2,17 +2,21 @@ import { useEffect, useRef, useState } from "react";
 import { ArchiveIcon, CopyIcon, OpenIcon, TagsIcon, TimeAddIcon, TrashIcon, UnknowUserIcon } from "../../../assets/icons"
 import type { Task } from "../../../utils/types";
 import { ChangeTagsDropDownMenu } from "./ChangeTagsDropDownMenu";
+import axios from "axios";
+import { ConfirmAlert } from "../../Alerts/ConfirmAlert";
 
 interface EditTaskDropDownMenuProps {
-    onClose: () => void;
     taskRef: React.RefObject<HTMLDivElement | null>;
     task: Task
+    onClose: () => void;
     onChangeTags: (ids: number[]) => void;
+    onDeleteTask: (id: number) => void;
 }
 
-export const EditTaskDropDownMenu = ({onClose, taskRef, task, onChangeTags}: EditTaskDropDownMenuProps ) => {
+export const EditTaskDropDownMenu = ({onClose, taskRef, task, onDeleteTask, onChangeTags}: EditTaskDropDownMenuProps ) => {
     const [isEditingTags, setIsEditingTags] = useState(false)
     const menuRef = useRef<HTMLDivElement | null>(null);
+    const [showAlert, setShowAlert] = useState(false)
             
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
@@ -52,7 +56,18 @@ export const EditTaskDropDownMenu = ({onClose, taskRef, task, onChangeTags}: Edi
             <button className="selectDeadlineButton flex g8"><TimeAddIcon /> Указать дедлайн</button>
             <button className="copyButton flex g8"><CopyIcon /> Копировать</button>
             <button className="archiveButton flex g8"><ArchiveIcon /> Архивировать</button>
-            <button className="deleteButton flex g8"><TrashIcon /> Удалить</button>
+            <button className="deleteButton flex g8" onClick={() => setShowAlert(true)}><TrashIcon /> Удалить</button>
+
+            {showAlert && (
+                <ConfirmAlert
+                    text="Удалить эту задачу?"
+                    onConfirm={() => {
+                        setShowAlert(false);
+                        onDeleteTask(task.id)
+                    }}
+                    onCancel={() => setShowAlert(false)}
+                />
+            )}
 
             {isEditingTags && (
                 <ChangeTagsDropDownMenu onClose={handleCloseDropDown} task={task} onChangeTags={onChangeTags} />

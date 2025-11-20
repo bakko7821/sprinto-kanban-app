@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type RefObject } from "react";
+import { useCallback, useEffect, useRef, useState, type RefObject } from "react";
 import type { Tag, Task } from "../../utils/types";
 import { ArchiveIcon, CrossIcon, DoneIcon, EditIcon2 } from "../../assets/icons";
 import { EditTaskDropDownMenu } from "./DropDownMenus/EditTaskDropDownMenu";
@@ -10,9 +10,10 @@ interface TaskComponentsProps {
     task: Task;
     onDone: () => void;
     onUpdate: (id: number, updated: Partial<Task>) => void;
+    onDeleteTask: (id: number) => void;
 }
 
-export const TaskComponent = ({task, onDone, onUpdate}: TaskComponentsProps) => {
+export const TaskComponent = ({task, onDone, onDeleteTask, onUpdate}: TaskComponentsProps) => {
     const [isDone, setIsDone] = useState(false)
     const [isEdit, setIsEdit] = useState(false)
     const [taskName, setTaskName] = useState("")
@@ -27,21 +28,25 @@ export const TaskComponent = ({task, onDone, onUpdate}: TaskComponentsProps) => 
 
     useEffect(() => {
         setTaskName(`${task.name}`)
+        setIsDone(task.isDone)
     }, [])
 
     useEffect(() => {
-        console.log(tagsId)
         loadTagsByIds(tagsId)
     }, [])
 
     const handleDone = () => {
-        setIsDone((prev) => !prev)
-        onDone()
-    }
+        setIsDone(prev => {
+            const newValue = !prev;
+            onUpdate(task.id, { isDone: newValue });
+            return newValue;
+        });
+    };
     
     const handleCloseDropDownMenu = () => {
         setIsEdit(false)
     }
+
 
     const handleSaveChanges = (e: React.FormEvent) => {
         e.preventDefault();
@@ -49,11 +54,20 @@ export const TaskComponent = ({task, onDone, onUpdate}: TaskComponentsProps) => 
         onUpdate(task.id, {
             name: taskName,
             deadline,
-            isDone
         });
 
         setIsEdit(false);
     };
+
+    const handleChangeTags = useCallback((ids: number[]) => {
+        console.log(ids)
+
+        onUpdate(task.id, {
+            tags: ids
+        });
+
+        loadTagsByIds(ids)
+    }, []);
 
     async function loadTagsByIds(ids: number[]) {
         const token = localStorage.getItem("token");
@@ -102,7 +116,7 @@ export const TaskComponent = ({task, onDone, onUpdate}: TaskComponentsProps) => 
             {...listeners}
             {...attributes}
             draggable={true}
-            className={`taskComponent ${isDragging ? "dragging" : ""} ${isEdit ? "edited" : ""}`}
+            className={`taskComponent flex-column g8 ${isDragging ? "dragging" : ""} ${isEdit ? "edited" : ""}`}
         >
             {!isDone ? (
                 <div className="buttonsBox flex-center g4">
@@ -180,7 +194,7 @@ export const TaskComponent = ({task, onDone, onUpdate}: TaskComponentsProps) => 
             {!isEdit ? (
                 null
             ) : (
-                <EditTaskDropDownMenu onClose={handleCloseDropDownMenu} taskRef={taskRef} task={task} onChangeTags={(ids) => setTagsId(ids)}/>
+                <EditTaskDropDownMenu onClose={handleCloseDropDownMenu} taskRef={taskRef} task={task} onDeleteTask={onDeleteTask} onChangeTags={handleChangeTags}/>
             )}
         </div>
         </>

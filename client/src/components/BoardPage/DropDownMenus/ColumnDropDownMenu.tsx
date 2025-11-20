@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { CrossIcon } from "../../../assets/icons";
 
 interface ColumnDropDownMenuProps {
@@ -6,8 +7,25 @@ interface ColumnDropDownMenuProps {
 }
 
 export const ColumnDropDownMenu = ({onClose, onDelete}: ColumnDropDownMenuProps) => {
+
+    const menuRef = useRef<HTMLDivElement | null>(null);
+            
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+                onClose();
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [onClose]);
+
     return (
-        <div className="columnDropDownMenu flex-column g12">
+        <div ref={menuRef} className="columnDropDownMenu flex-column g12">
             <div className="columnDropDownMenuHeader flex-between">
                 <span>Действия со столбцом</span>
                 <button className="closeMenu flex-center" onClick={() => onClose()}><CrossIcon /></button>

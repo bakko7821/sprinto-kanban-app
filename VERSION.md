@@ -147,3 +147,16 @@
 - Вынес стили для columnsComponent из **/styles/boardPage.scss** в **/components/BoardPage/columnsComponent.scss**
 
 - Теперь не работает функция добавления тегов. Нужно будет починить
+
+# commit 11.15.0
+
+### Серверная часть
+
+- Добавлен DELETE роут для задачи
+
+### Клиентская чать
+
+- Починил добавление, изменение и отрисовку тегов.
+- Добавил функцию удаления задачи
+- Перед удалением появляется компонент **/components/Alerts/ConfirmAlert.tsx**
+- Для **ConfirmAlert.tsx** были написанны стили в **/styles/alerts.scss**

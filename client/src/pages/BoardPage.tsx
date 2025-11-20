@@ -18,6 +18,7 @@ export const BoardPage = () => {
     const [columnName, setColumnName] = useState("")
     const [editingName, setEditingName] = useState(false)
     const [isAdding, setIsAdding] = useState(false)
+    
 
     const token = localStorage.getItem("token")
     const userId: string | null = localStorage.getItem("userId")
@@ -51,7 +52,6 @@ export const BoardPage = () => {
 
         async function fetchColumnsAndTasks() {
             try {
-                // Получаем колонки
                 const resColumns = await axios.get(
                     `http://localhost:5000/api/columns/boardId/${board?.id}`,
                     { headers: { Authorization: `Bearer ${token}` } }
@@ -60,7 +60,6 @@ export const BoardPage = () => {
                 const columnsData = resColumns.data;
                 setColumns(columnsData);
 
-                // Получаем задачи для каждой колонки
                 const tasksByColumn: { [columnId: string]: Task[] } = {};
 
                 await Promise.all(
@@ -122,6 +121,35 @@ export const BoardPage = () => {
     const handleDeleteColumn = (columnId: number) => {
         console.log("Удаляем колонку:", columnId);
         setColumns(prev => prev.filter(c => c.id !== columnId));
+    };
+
+
+    const handleDeleteTask = async (id: number) => {
+
+        if (!token) return;
+
+        try {
+            setTasksByColumn(prev => {
+                const next: { [columnId: string]: Task[] } = {};
+                    Object.keys(prev).forEach(colId => {
+                        next[colId] = (prev[colId] ?? []).filter(t => t.id !== id);
+                    });
+                return next;
+            });
+
+            await axios.delete(`http://localhost:5000/api/tasks/${id}`,
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+        } catch (err) {
+            console.error("Ошибка при удалении задачи:", err);
+        }
+    };
+
+    const handleAddTask = (columnId: number, newTask: Task) => {
+        setTasksByColumn(prev => ({
+            ...prev,
+            [columnId]: [...(prev[columnId] || []), newTask]
+        }));
     };
 
     const handleDragEnd = async (event: DragEndEvent) => {
@@ -208,17 +236,21 @@ export const BoardPage = () => {
                 }}
             >
                 <div className="columnsBox flex g16">
-                    {columns.map((column) => {
-                        return <ColumnComponent
-                                    key={column.id}
-                                    column={column}
-                                    tasks={tasksByColumn[column.id] || []}
-                                    onDelete={handleDeleteColumn}
-                                    onTasksChange={(newTasks) =>
-                                        setTasksByColumn(prev => ({ ...prev, [column.id]: newTasks }))
-                                    }
-                                />
-                    })}
+                    {columns.map((column) => (
+                    <ColumnComponent
+                        key={column.id}
+                        column={column}
+                        tasks={tasksByColumn[column.id] || []}
+                        onTasksChange={(newTasks) =>
+                            setTasksByColumn(prev => ({ ...prev, [column.id]: newTasks }))
+                        }
+                        onAddTask={handleAddTask}
+                        onDeleteTask={handleDeleteTask}
+                        onDeleteColumn={handleDeleteColumn}  // ← ДОБАВИТЬ
+                    />
+
+                    ))}
+
                     {!isAdding ? (
                         <button className="addColumnButton flex-center g8" onClick={() => {setIsAdding((prev) => !prev)}}>
                             <AddIcon />
@@ -246,6 +278,7 @@ export const BoardPage = () => {
                             task={activeTask}
                             onDone={() => {}}
                             onUpdate={() => {}}
+                            onDeleteTask={handleDeleteTask}
                         />
                     ) : null}
                 </DragOverlay>

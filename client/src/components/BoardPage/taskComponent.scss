@@ -84,7 +84,7 @@
             width: 100%;
 
             input {
-                padding: 8px;
+                padding: 8px 0px;
                 font-size: $rem1;
                 color: $text-color;
                 line-height: 1.5;
@@ -157,14 +157,10 @@
         }
 
         button.deleteButton {
+            color: #A80303;
+
             &:hover {
                 background-color: #D49F9F;
-                color: #A80303;
-
-                svg {
-                    transform: rotate(30deg);
-                    color: #A80303;
-                }
             }
         }
 
