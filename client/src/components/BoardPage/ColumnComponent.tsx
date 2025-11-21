@@ -14,10 +14,11 @@ interface ColumnComponentProps {
     onAddTask: (columnId: number, task: Task) => void;
     onDeleteTask: (id: number) => void;
     onDeleteColumn: (id: number) => void;
+    fetchColumnsAndTasks: () => void;
 }
 
 
-export const ColumnComponent = ({ column, tasks, onAddTask, onDeleteColumn, onDeleteTask, onTasksChange }: ColumnComponentProps) => {
+export const ColumnComponent = ({fetchColumnsAndTasks, column, tasks, onAddTask, onDeleteColumn, onDeleteTask, onTasksChange }: ColumnComponentProps) => {
     const { setNodeRef: setDroppableRef } = useDroppable({ id: column.id });
     const [isAdding, setIsAdding] = useState(false)
     const [isOpenMenu, setIsOpenMenu] = useState(false)
@@ -141,7 +142,7 @@ export const ColumnComponent = ({ column, tasks, onAddTask, onDeleteColumn, onDe
             )}
 
             {!isOpenMenu ? null : (
-                <ColumnDropDownMenu onClose={handleCloseMenu} onDelete={handleDeleteColumn}/>
+                <ColumnDropDownMenu fetchColumnsAndTasks={fetchColumnsAndTasks} column={column} onClose={handleCloseMenu} onDelete={handleDeleteColumn}/>
             )}
         </div>
     )

@@ -140,7 +140,31 @@ router.delete("/:id", authMiddleware, async(req: AuthRequest, res: Response) => 
 
     } catch (error: unknown) {
         console.error(error);
-        res.status(500).json({ message: "Ошибка при удалении колонки" });
+        res.status(500).json({ message: "Ошибка при удалении задачи" });
+    }
+})
+
+router.put("/columnId/:id", authMiddleware, async(req: AuthRequest, res: Response) => {
+    const userId = (req.user as any)?.id;
+    
+    if (!userId) {
+      return res.status(400).json({ message: "Некорректный токен" });
+    }
+
+    try {
+        const id = Number(req.params.id)
+
+        const tasks = await Task.findAll({ where: { columnId: id } });
+
+        await Promise.all(
+            tasks.map(task => task.update({ isArchive: true }))
+        );
+
+        return res.status(200).json({ message: "Все задачи успешно заархивированы" });
+
+    } catch (error: unknown) {
+        console.error(error);
+        res.status(500).json({ message: "Ошибка при отправке всех задач из списка в архив" });
     }
 })
 

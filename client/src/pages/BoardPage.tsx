@@ -349,6 +349,7 @@ export const BoardPage = () => {
                 <div className="columnsBox flex g16">
                     {columns.map((column) => (
                     <ColumnComponent
+                        fetchColumnsAndTasks={fetchColumnsAndTasks}
                         key={column.id}
                         column={column}
                         tasks={tasksByColumn[column.id] || []}
