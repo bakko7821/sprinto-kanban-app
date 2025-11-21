@@ -53,37 +53,37 @@ export const BoardPage = () => {
         fetchBoard();
     }, [id, token]);
 
-    useEffect(() => {
+    const fetchColumnsAndTasks = async () => {
         if (!token || !userId || !board?.id) return;
 
-        async function fetchColumnsAndTasks() {
-            try {
-                const resColumns = await axios.get(
-                    `http://localhost:5000/api/columns/boardId/${board?.id}`,
-                    { headers: { Authorization: `Bearer ${token}` } }
-                );
+        try {
+            const resColumns = await axios.get(
+                `http://localhost:5000/api/columns/boardId/${board?.id}`,
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
 
-                const columnsData = resColumns.data;
-                setColumns(columnsData);
+            const columnsData = resColumns.data;
+            setColumns(columnsData);
 
-                const tasksByColumn: { [columnId: string]: Task[] } = {};
+            const tasksByColumn: { [columnId: string]: Task[] } = {};
 
-                await Promise.all(
-                    columnsData.map(async (column: Column) => {
-                        const resTasks = await axios.get(
-                            `http://localhost:5000/api/tasks/columnId/${column.id}`,
-                            { headers: { Authorization: `Bearer ${token}` } }
-                        );
-                        tasksByColumn[column.id] = resTasks.data;
-                    })
-                );
+            await Promise.all(
+                columnsData.map(async (column: Column) => {
+                    const resTasks = await axios.get(
+                        `http://localhost:5000/api/tasks/columnId/${column.id}`,
+                        { headers: { Authorization: `Bearer ${token}` } }
+                    );
+                    tasksByColumn[column.id] = resTasks.data;
+                })
+            );
 
-                setTasksByColumn(tasksByColumn);
-            } catch (err) {
-                console.error("Ошибка при загрузке колонок и задач:", err);
-            }
+            setTasksByColumn(tasksByColumn);
+        } catch (err) {
+            console.error("Ошибка при загрузке колонок и задач:", err);
         }
+    };
 
+    useEffect(() => {
         fetchColumnsAndTasks();
     }, [board?.id, token, userId]);
 
@@ -328,7 +328,7 @@ export const BoardPage = () => {
                     <button className="shareButton">Поделиться</button>
                     <button className="moreButton"><MoreIcon /></button>
 
-                    {!isOpenArchiveDropDown ? null : <ArchiveDropDownMenu board={board} onDeleteTask={handleDeleteTask} onClose={() => setIsOpenArchiveDropDown((prev) => !prev)}/>}
+                    {!isOpenArchiveDropDown ? null : <ArchiveDropDownMenu board={board} fetchColumnsAndTasks={fetchColumnsAndTasks} onDeleteTask={handleDeleteTask} onClose={() => setIsOpenArchiveDropDown((prev) => !prev)}/>}
                 </nav>
             </div>
             <DndContext

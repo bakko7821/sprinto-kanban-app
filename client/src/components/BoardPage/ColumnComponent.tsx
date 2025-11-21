@@ -40,9 +40,8 @@ export const ColumnComponent = ({ column, tasks, onAddTask, onDeleteColumn, onDe
                 }
             );
 
-            const newTask: Task = res.data; // сервер вернёт объект задачи
+            const newTask: Task = res.data;
 
-            // ⬅️ Добавляем задачу в BoardPage
             onAddTask(column.id, newTask);
 
             setTaskName("");

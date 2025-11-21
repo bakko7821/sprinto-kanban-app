@@ -13,8 +13,15 @@ export const ConfirmAlert = ({ text, onConfirm, onCancel }: ConfirmAlertProps ) 
             <div className="ConfirmAlert flex-column g12">
                 <span>{text}</span>
                 <div className="buttonsBox flex-center g8">
-                    <button onClick={onConfirm}>Да</button>
-                    <button onClick={onCancel} className="cancelButton">Нет</button>
+                    <button 
+                        type="button"
+                        onClick={() => {
+                            console.log("INSIDE MODAL — CONFIRM CLICKED");
+                            onConfirm();
+                        }}
+                    >Да
+                    </button>
+                    <button type="button" onClick={onCancel} className="cancelButton">Нет</button>
                 </div>
             </div>
         </div>,

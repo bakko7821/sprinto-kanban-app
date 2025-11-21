@@ -199,3 +199,8 @@
 ### Клиентская часть
 
 - Создан компонент **/components/BoardPage/DropDownMenus/ArchiveDropDownMenu.tsx**
+
+# commit 15.19.0
+
+- Добавленна возможность восстановления из архива и удаление карточки
+- Функция архивирования добавлена в **EditTaskDropDownMenu.tsx**

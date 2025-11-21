@@ -4,14 +4,16 @@ import axios from "axios"
 import type { Board, Task } from "../../../utils/types"
 import { BackIcon, CrossIcon, DoneIcon } from "../../../assets/icons"
 import { TaskComponent } from "../TaskComponent"
+import { ConfirmAlert } from "../../Alerts/ConfirmAlert"
 
 interface ArchiveDropDownMenuProps {
     board: Board | null
     onDeleteTask: (id: number) => void;
+    fetchColumnsAndTasks: () => void;
     onClose: () => void;
 }
 
-export const ArchiveDropDownMenu = ({board, onDeleteTask, onClose}: ArchiveDropDownMenuProps) => {
+export const ArchiveDropDownMenu = ({board, fetchColumnsAndTasks, onDeleteTask, onClose}: ArchiveDropDownMenuProps) => {
     const token = localStorage.getItem('token')
     const userId = localStorage.getItem('userId')
     const [archivedTasks, setArchivedTasks] = useState<Task[]>([])
@@ -51,6 +53,31 @@ export const ArchiveDropDownMenu = ({board, onDeleteTask, onClose}: ArchiveDropD
         fetchArchivedTasks()
     }, [])
 
+    const handleRecoveryObject = async (task: Task) => {
+        let updated = { isArchive: false };
+
+        try {
+            const response = await axios.put(
+                `http://localhost:5000/api/tasks/${task.id}`,
+                updated,
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+
+            setArchivedTasks(prev => prev.filter(t => t.id !== task.id));
+            fetchColumnsAndTasks();
+
+        } catch (err) {
+            console.error("Ошибка при обновлении задачи", err);
+        }
+    }
+
+    const handleDeleteObject = (task: Task) => {
+        setArchivedTasks(prev => prev.filter(t => t.id !== task.id));
+
+        onDeleteTask(task.id);
+        fetchColumnsAndTasks();
+    };
+
     return (
         <div ref={menuRef} className="archiveDropDown flex-column g8">
             <div className="archiveHeader flex-between">
@@ -59,20 +86,26 @@ export const ArchiveDropDownMenu = ({board, onDeleteTask, onClose}: ArchiveDropD
             </div>
             <div className="tasksList flex-column g8">
                 {archivedTasks.map((archivedTask) => (
-                    <div className="taskMenu flex-column g4">
+                    <div className="taskMenu flex-column g4" key={archivedTask.id}>
                         <TaskComponent 
                             task={archivedTask}
                             onDone={() => {}}
                             onUpdate={() => {}}
                             onDeleteTask={onDeleteTask}/>
                         <div className="buttonsBox flex g8">
-                            <button className="recoveryButton">Восстановить</button>
+                            <button 
+                                className="recoveryButton"
+                                onClick={() => handleRecoveryObject(archivedTask)}>Восстановить</button>
                             <div className="circle"></div>
-                            <button className="deleteButton" onClick={() => onDeleteTask(archivedTask.id)}>Удалить</button>
+                            <button 
+                                className="deleteButton" 
+                                onClick={() => handleDeleteObject(archivedTask)}
+                                >Удалить</button>
                         </div>
                     </div>
                 ))}
             </div>
+
         </div>
     )
 }

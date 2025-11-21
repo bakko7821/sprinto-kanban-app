@@ -8,12 +8,13 @@ import { ConfirmAlert } from "../../Alerts/ConfirmAlert";
 interface EditTaskDropDownMenuProps {
     taskRef: React.RefObject<HTMLDivElement | null>;
     task: Task
+    onUpdate: (id: number, updated: Partial<Task>) => void;
     onClose: () => void;
     onChangeTags: (ids: number[]) => void;
     onDeleteTask: (id: number) => void;
 }
 
-export const EditTaskDropDownMenu = ({onClose, taskRef, task, onDeleteTask, onChangeTags}: EditTaskDropDownMenuProps ) => {
+export const EditTaskDropDownMenu = ({onUpdate, onClose, taskRef, task, onDeleteTask, onChangeTags}: EditTaskDropDownMenuProps ) => {
     const [isEditingTags, setIsEditingTags] = useState(false)
     const menuRef = useRef<HTMLDivElement | null>(null);
     const [showAlert, setShowAlert] = useState(false)
@@ -55,7 +56,7 @@ export const EditTaskDropDownMenu = ({onClose, taskRef, task, onDeleteTask, onCh
             <button className="selectUserButton flex g8"><UnknowUserIcon /> Назначить исполнителя</button>
             <button className="selectDeadlineButton flex g8"><TimeAddIcon /> Указать дедлайн</button>
             <button className="copyButton flex g8"><CopyIcon /> Копировать</button>
-            <button className="archiveButton flex g8"><ArchiveIcon /> Архивировать</button>
+            <button className="archiveButton flex g8" onClick={() => onUpdate(task.id, {isArchive: true})}><ArchiveIcon /> Архивировать</button>
             <button className="deleteButton flex g8" onClick={() => setShowAlert(true)}><TrashIcon /> Удалить</button>
 
             {showAlert && (
