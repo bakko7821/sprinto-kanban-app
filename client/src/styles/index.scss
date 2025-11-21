@@ -50,6 +50,7 @@ a {
 #root {
     display: flex;
     flex-direction: column;
+    overflow: hidden;
     align-items: center;
     justify-content: start;
     width: 100vw;

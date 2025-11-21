@@ -9,6 +9,7 @@ import columnsRoutes from "./routes/columns"
 import tasksRoutes from "./routes/tasks"
 import tagsRoutes from "./routes/tags"
 import uploadRouter from "./routes/upload"
+import archiveRouter from "./routes/archives"
 import "./models"
 import path from "path";
 
@@ -25,6 +26,7 @@ app.use("/api/columns", columnsRoutes);
 app.use("/api/tasks", tasksRoutes);
 app.use("/api/tags", tagsRoutes);
 app.use("/api/upload", uploadRouter);
+app.use("/api/archive", archiveRouter);
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 async function startServer() {

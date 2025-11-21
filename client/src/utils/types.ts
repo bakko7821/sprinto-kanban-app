@@ -40,9 +40,10 @@ export interface Task {
     name: string;
     deadline: string;
     isDone: boolean;
-    columnId: number
-
-    tags: number[]
+    isArchive: boolean;
+    columnId: number;
+    executorIds: number[];
+    tags: number[];
 }
 
 export interface Tag {

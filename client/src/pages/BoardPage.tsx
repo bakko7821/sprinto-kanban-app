@@ -7,6 +7,7 @@ import { AddIcon, ArchiveIcon, CrossIcon, DoneIcon, EditIcon, EditIcon2, EditIco
 import { ColumnComponent } from "../components/BoardPage/ColumnComponent"
 import { closestCenter, DndContext, DragOverlay, type DragEndEvent, } from "@dnd-kit/core"
 import { TaskComponent } from "../components/BoardPage/TaskComponent"
+import { ArchiveDropDownMenu } from "../components/BoardPage/DropDownMenus/ArchiveDropDownMenu"
 
 export const BoardPage = () => {
     const {id} = useParams()
@@ -20,6 +21,8 @@ export const BoardPage = () => {
     const [editingName, setEditingName] = useState(false)
     const [isAdding, setIsAdding] = useState(false)
     const [editIsPrivate, setEditIsPrivate] = useState(false)
+
+    const [isOpenArchiveDropDown, setIsOpenArchiveDropDown] = useState(false)
 
     const token = localStorage.getItem("token")
     const userId: string | null = localStorage.getItem("userId")
@@ -310,15 +313,22 @@ export const BoardPage = () => {
                         </div>
                     </form>
                 )}
-                <nav className="flex-center g8">
+                <nav className={`headerNavigate flex-center g8 ${isOpenArchiveDropDown ? 'opened' : ''}`}>
                     <button className="upgradeButton"><EditIcon3 /></button>
-                    <button className="archiveButton"><ArchiveIcon /></button>
+                    <button 
+                        className="archiveButton" 
+                        onClick={() => {setIsOpenArchiveDropDown((prev) => !prev)}}
+                    >
+                        <ArchiveIcon />
+                    </button>
                     <button className="autoButton" id="hammerButton"><HammerIcon /></button>
                     <button className="sortButton"><SortIcon /></button>
                     <button className="favoriteButton"><HeartIcon /></button>
                     <button className="visibilityButton"><UsersIcon /></button>
                     <button className="shareButton">Поделиться</button>
                     <button className="moreButton"><MoreIcon /></button>
+
+                    {!isOpenArchiveDropDown ? null : <ArchiveDropDownMenu board={board} onDeleteTask={handleDeleteTask} onClose={() => setIsOpenArchiveDropDown((prev) => !prev)}/>}
                 </nav>
             </div>
             <DndContext
@@ -384,6 +394,7 @@ export const BoardPage = () => {
                     ) : null}
                 </DragOverlay>
             </DndContext>
+
         </div>
     )
 }

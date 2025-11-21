@@ -67,9 +67,9 @@ export const ColumnComponent = ({ column, tasks, onAddTask, onDeleteColumn, onDe
 
             const updatedTask = response.data;
 
-            const newTaskList = tasks.map(t =>
-                t.id === id ? updatedTask : t
-            );
+            const newTaskList = tasks
+                .map(t => (t.id === id ? updatedTask : t)) // заменяем задачу
+                .filter(t => !t.isArchive); // убираем архивные задачи
 
             onTasksChange(newTaskList);
 

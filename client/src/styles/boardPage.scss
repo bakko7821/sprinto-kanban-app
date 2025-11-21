@@ -91,10 +91,11 @@
             }
         }
 
-        nav {
+        .headerNavigate {
             background-color: $background-color;
             padding: 8px;
             border-radius: 20px;
+
             button {
                 display: flex;
                 align-items: center;
@@ -143,6 +144,76 @@
                     }
                 }
             }
+
+            .archiveDropDown {
+                min-width: 270px;
+                right: 0px;
+                position: absolute;
+                top: 100%;
+                background-color: $background-card-color;
+                padding: 8px;
+                border-radius: 0px 0px 20px 20px;
+
+                .archiveHeader {
+                    align-items: center;
+                    
+                    svg {
+                        path {
+                            fill: $second-text-color;
+                        }
+                    }
+
+                    .titleText {
+                        font-weight: 500;
+                        font-size: $rem1;
+                        color: $second-text-color;
+                    }
+                }
+
+                .taskMenu {
+                    .buttonsBox {
+                        align-items: center;
+
+                        .circle {
+                            width: 4px;
+                            height: 4px;
+                            border-radius: 100%;
+                            background-color: $second-text-color;
+                        }
+
+                        button {
+                            color: $second-text-color;
+                            background-color: transparent;
+                            padding: 0;
+                            font-size: $rem0_875;
+                            font-weight: 500;
+                            text-decoration: none;
+                            transition: all 0.5s;
+
+                            &:hover {
+                                text-decoration: underline;
+                            }
+                        }
+
+                        button.recoveryButton {
+                            &:hover {
+                                color: #006915;
+                            }
+                        }
+
+                        button.deleteButton {
+                            &:hover {
+                                color: #A80303;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .headerNavigate.opened {
+            position: relative;
+            border-radius: 20px 20px 0px 20px;
         }
     }
 

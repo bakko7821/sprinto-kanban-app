@@ -186,3 +186,16 @@
 - Создана страница **HomePage.tsx**
 - Создан компонент **/components/BoardComponent.tsx**
 - Созданы стили **/styles/boardPage.scss**
+
+# commit 15.18.0
+
+### Серверная часть
+
+- Расширенна модель Task.ts - добавленны параметры executorIds: number[] и isArchive: boolean
+- Добаваленна логика для кнопки добавления в архив.
+- Создан GET эндпоинт на получение всех архивированных задач **/routes/archives.ts**
+- Изменен GET эндпоинт в **/routes/tasks.ts**, теперь он не показывает архивированные задачи
+
+### Клиентская часть
+
+- Создан компонент **/components/BoardPage/DropDownMenus/ArchiveDropDownMenu.tsx**

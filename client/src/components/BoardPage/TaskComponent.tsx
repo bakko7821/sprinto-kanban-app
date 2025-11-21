@@ -14,10 +14,11 @@ interface TaskComponentsProps {
 }
 
 export const TaskComponent = ({task, onDone, onDeleteTask, onUpdate}: TaskComponentsProps) => {
-    const [isDone, setIsDone] = useState(false)
+    const [isDone, setIsDone] = useState(task.isDone)
+    const [isArchive, setIsArchive] = useState(task.isArchive)
     const [isEdit, setIsEdit] = useState(false)
-    const [taskName, setTaskName] = useState("")
-    const [deadline, setDeadline] = useState("")
+    const [taskName, setTaskName] = useState(task.name)
+    const [deadline, setDeadline] = useState(task.deadline)
     const [tagsId, setTagsId] = useState<number[]>(task.tags)
     const [renderTags, setRenderTags] = useState<Tag[]>([]);
 
@@ -47,6 +48,15 @@ export const TaskComponent = ({task, onDone, onDeleteTask, onUpdate}: TaskCompon
         setIsEdit(false)
     }
 
+    const handleDropToArchive = () => {
+        console.log(task.isArchive)
+
+        setIsArchive(prev => {
+            const newValue = !prev;
+            onUpdate(task.id, { isArchive: newValue });
+            return newValue;
+        });
+    }
 
     const handleSaveChanges = (e: React.FormEvent) => {
         e.preventDefault();
@@ -118,27 +128,35 @@ export const TaskComponent = ({task, onDone, onDeleteTask, onUpdate}: TaskCompon
             draggable={true}
             className={`taskComponent flex-column g8 ${isDragging ? "dragging" : ""} ${isEdit ? "edited" : ""}`}
         >
-            {!isDone ? (
-                <div className="buttonsBox flex-center g4">
-                    <button 
-                        className="editButton flex-center" 
-                        onMouseDown={(e) => e.stopPropagation()}
-                        onPointerDown={(e) => e.stopPropagation()}
-                        onClick={() => setIsEdit((prev) => !prev)}>
-                            <EditIcon2 />
-                    </button>
-                </div>
-            ) : (
-                <div className="buttonsBox flex-center g4">
-                    <button className="archiveButton flex-center"><ArchiveIcon /></button>
-                    <button 
-                        className="editButton flex-center" 
-                        onMouseDown={(e) => e.stopPropagation()}
-                        onPointerDown={(e) => e.stopPropagation()}
-                        onClick={() => setIsEdit((prev) => !prev)}>
-                            <EditIcon2 />
-                    </button>
-                </div>
+            {task.isArchive ? null : (
+                !isDone ? (
+                    <div className="buttonsBox flex-center g4">
+                        <button 
+                            className="editButton flex-center" 
+                            onMouseDown={(e) => e.stopPropagation()}
+                            onPointerDown={(e) => e.stopPropagation()}
+                            onClick={() => setIsEdit(prev => !prev)}>
+                                <EditIcon2 />
+                        </button>
+                    </div>
+                ) : (
+                    <div className="buttonsBox flex-center g4">
+                        <button 
+                            className="archiveButton flex-center"
+                            onMouseDown={(e) => e.stopPropagation()}
+                            onPointerDown={(e) => e.stopPropagation()}
+                            onClick={handleDropToArchive}>
+                                <ArchiveIcon />
+                        </button>
+                        <button 
+                            className="editButton flex-center" 
+                            onMouseDown={(e) => e.stopPropagation()}
+                            onPointerDown={(e) => e.stopPropagation()}
+                            onClick={() => setIsEdit(prev => !prev)}>
+                                <EditIcon2 />
+                        </button>
+                    </div>
+                )
             )}
             <div className="taskTagsBox flex g6">
                 {renderTags.map((tag, index) => (

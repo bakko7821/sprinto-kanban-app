@@ -6,7 +6,9 @@ interface TaskAttrs {
   name: string;
   deadline: string;
   isDone: boolean;
+  isArchive: boolean;
   columnId: number;
+  executorIds: number[];
   tags: number[];
 }
 
@@ -16,8 +18,10 @@ class Task extends Model<TaskAttrs, TaskCreation> {
   public id!: number;
   public name!: string;
   public isDone!: boolean;
+  public isArchive!: boolean; 
   public deadline!: string;
   public columnId!: number;
+  public executorIds!: number[];
   public tags!: number[];
 }
 
@@ -27,7 +31,14 @@ Task.init(
     name: DataTypes.STRING,
     deadline: DataTypes.STRING,
     isDone: DataTypes.BOOLEAN,
+    isArchive: DataTypes.BOOLEAN,
     columnId: { type: DataTypes.INTEGER, allowNull: false },
+
+    executorIds: {
+      type: DataTypes.ARRAY(DataTypes.INTEGER),
+      allowNull: false,
+      defaultValue: []
+    },
 
     tags: {
       type: DataTypes.ARRAY(DataTypes.INTEGER),

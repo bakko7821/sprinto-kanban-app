@@ -22,7 +22,9 @@ router.post("/:id", authMiddleware, async(req: AuthRequest, res: Response) => {
             columnId: columnId,
             deadline: "",
             isDone: false,
-            tags: []
+            tags: [],
+            isArchive: false,
+            executorIds: []
         });
 
         res.json(newTask);
@@ -43,7 +45,7 @@ router.get("/columnId/:id", authMiddleware, async(req: AuthRequest, res: Respons
         const id = Number(req.params.id)
 
         const tasks = await Task.findAll({
-            where: { columnId: id }
+            where: { columnId: id, isArchive: false }
         });
 
         if (!tasks) {
@@ -105,13 +107,15 @@ router.put("/:id", authMiddleware, async (req: AuthRequest, res: Response) => {
             return res.status(404).json({ message: "Задача не найдена" });
         }
 
-        const { name, deadline, tags, isDone } = req.body;
+        const { name, deadline, tags, isDone, isArchive, executorIds } = req.body;
 
         await task.update({
             name,
             deadline,
             tags,
-            isDone
+            isDone,
+            isArchive,
+            executorIds,
         });
 
         res.json(task);

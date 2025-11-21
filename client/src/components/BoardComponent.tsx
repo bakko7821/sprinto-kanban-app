@@ -17,7 +17,7 @@ export const BoardComponent = ({board}: BoardComponentProps) => {
             />
             <div className="textInfoBox flex-between g8">
                 <span className="boardName">{board.name}</span>
-                {board.isPrivate ? <KeyIcon /> : <LockIcon />}
+                {board.isPrivate ? <LockIcon /> : <KeyIcon />}
             </div>
         </div>
     )
