@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState, type RefObject } from "react";
 import type { Tag, Task } from "../../utils/types";
-import { ArchiveIcon, CrossIcon, DoneIcon, EditIcon2 } from "../../assets/icons";
+import { ArchiveIcon, CrossIcon, DoneIcon, EditIcon2, TimeIcon } from "../../assets/icons";
 import { EditTaskDropDownMenu } from "./DropDownMenus/EditTaskDropDownMenu";
 import axios from "axios";
 import { useDraggable } from "@dnd-kit/core";
@@ -19,6 +19,7 @@ export const TaskComponent = ({task, onDone, onDeleteTask, onUpdate}: TaskCompon
     const [isEdit, setIsEdit] = useState(false)
     const [taskName, setTaskName] = useState(task.name)
     const [deadline, setDeadline] = useState(task.deadline)
+    const [formatedDate, setFormatedDate] = useState('')
     const [tagsId, setTagsId] = useState<number[]>(task.tags)
     const [renderTags, setRenderTags] = useState<Tag[]>([]);
 
@@ -27,10 +28,50 @@ export const TaskComponent = ({task, onDone, onDeleteTask, onUpdate}: TaskCompon
         disabled: isEdit,
     });
 
+    const formatedDateVoid = (date: string) => {
+        const dateObj = new Date(date);
+
+        return dateObj.toLocaleDateString("ru-RU", {
+            day: "numeric",
+            month: "short"
+        }); 
+    }
+
+    const compareWithToday = (iso: string) => {
+        const d = new Date(iso);
+
+        const target = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+
+        const now = new Date();
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+        if (target.getTime() === today.getTime()) return "today";
+        if (target.getTime() < today.getTime()) return "past";
+        return "future";
+    };
+
+
+    const [dateStatus, setDateStatus] = useState<"today" | "past" | "future" | null>(null);
+
     useEffect(() => {
-        setTaskName(`${task.name}`)
-        setIsDone(task.isDone)
-    }, [])
+        setTaskName(task.name);
+        setIsDone(task.isDone);
+
+        if (task.deadline) {
+            const formatted = formatedDateVoid(task.deadline);
+            setFormatedDate(formatted);
+
+            const status = compareWithToday(task.deadline);
+            setDateStatus(status);
+        }
+    }, [task]);
+
+    const getDateBoxClass = () => {
+        if (isDone) return "done";
+        if (dateStatus === "today") return "soon";
+        if (dateStatus === "past") return "overdue";
+        return "";
+    };
 
     useEffect(() => {
         loadTagsByIds(tagsId)
@@ -63,11 +104,22 @@ export const TaskComponent = ({task, onDone, onDeleteTask, onUpdate}: TaskCompon
 
         onUpdate(task.id, {
             name: taskName,
-            deadline,
         });
 
         setIsEdit(false);
     };
+
+    const handleSetDate = async (result: string) => {
+        onUpdate(task.id, {
+            deadline: result
+        })
+
+        console.log(`дата изменена на ${result}`)
+    }
+
+    const handleSetExecutor = async () => {
+        console.log('setExecutor')
+    }
 
     const handleChangeTags = useCallback((ids: number[]) => {
         console.log(ids)
@@ -78,6 +130,7 @@ export const TaskComponent = ({task, onDone, onDeleteTask, onUpdate}: TaskCompon
 
         loadTagsByIds(ids)
     }, []);
+
 
     async function loadTagsByIds(ids: number[]) {
         const token = localStorage.getItem("token");
@@ -208,11 +261,19 @@ export const TaskComponent = ({task, onDone, onDeleteTask, onUpdate}: TaskCompon
                     </form>
                 )}
             </div>
+            <div className="taskBottomInfo flex g8" onMouseDown={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()}>
+                {!task.deadline ? null : (
+                    <div className={`dateBox flex-center g4 ${getDateBoxClass()}`}>
+                        <TimeIcon />
+                        <span>{formatedDate}</span>
+                    </div>
+                )}
+            </div>
 
             {!isEdit ? (
                 null
             ) : (
-                <EditTaskDropDownMenu onUpdate={onUpdate} onClose={handleCloseDropDownMenu} taskRef={taskRef} task={task} onDeleteTask={onDeleteTask} onChangeTags={handleChangeTags}/>
+                <EditTaskDropDownMenu onSetDate={handleSetDate} onSetExecutor={handleSetExecutor} onUpdate={onUpdate} onClose={handleCloseDropDownMenu} taskRef={taskRef} task={task} onDeleteTask={onDeleteTask} onChangeTags={handleChangeTags}/>
             )}
         </div>
         </>

@@ -137,7 +137,7 @@ export const ChangeTagsDropDownMenu = ({onClose, task, onChangeTags}: ChangeTags
                         onChange={(e) => setIsNewTagName(e.target.value)}/>
                     <label htmlFor="color">Цвет</label>
                     <PickColor onSelect={setIsNewTagColor}/>
-                    <button className="createNewTagButton flex-center" onClick={handleCreateTag}>Создать новую метку</button>
+                    <button className="createNewTagButton flex-center" onClick={handleCreateTag}>Сохранить новую метку</button>
                 </form>
                 </>
             )}

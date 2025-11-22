@@ -129,6 +129,36 @@
         }
     }
 
+    .taskBottomInfo {
+        .dateBox {
+            padding: 4px;
+            background-color: $background-card-color;
+            border-radius: 4px;
+            font-size: $rem0_875;
+            line-height: 1.5;
+            font-weight: 500;
+            color: $second-text-color;
+
+            svg {
+                width: 21px;
+                height: 21px;
+            }
+        }
+        
+        .dateBox.soon {
+            background-color: #fbc828;
+        }
+
+        .dateBox.overdue {
+            background-color: #5d1f1a;
+            color: $button-text-color;
+        }
+
+        .dateBox.done {
+            background-color: #94c748;
+        }
+    }
+
     .editTaskDropDownMenu {
         left: calc(100% + 8px);
         top: 0px;
@@ -149,6 +179,7 @@
 
             &:hover {
                 background-color: $background-card-hover-color;
+                color: $text-color;
 
                 svg {
                     transform: rotate(30deg);
@@ -164,9 +195,14 @@
             }
         }
 
-        .changeTagsButton.active {
+        .active {
             background-color: $main-color;
             color: $button-text-color;
+
+            &:hover {
+                background-color: $main-hover-color;
+                color: $button-text-color;
+            }
         }
 
         .changeTagsDropDownMenu {
@@ -288,6 +324,60 @@
                 .color:hover {
                     transform: scale(1.12);
                     box-shadow: 0 0 4px rgba(0,0,0,0.3);
+                }
+            }
+
+            .createNewTagButton {
+                background-color: #005a0b;
+                color: $button-text-color;
+                
+                &:hover {
+                    background-color: #008710;
+                }
+            }
+        }
+
+        .setDateDropDownMenu {
+            cursor: default;
+            min-width: 100%;
+            width: fit-content;
+            position: absolute;
+            left: 0;
+            top: 192px;
+            z-index: 100;
+            background-color: $background-card-color;
+            border-radius: 12px 20px 20px 20px;
+            padding: 8px;
+
+            .setDateHeader {
+                align-items: center;
+                padding: 8px;
+
+                span {
+                    color: $text-color;
+                    font-weight: 500;
+                    font-size: $rem1-5;
+                    line-height: 1.5;
+                }
+            }
+
+            .handleSetDateForm {
+
+                .dateInput, .timeInput {
+                    padding: 8px;
+                    background-color: $background-second-card-color;
+                    border-radius: 12px;
+                    font-size: $rem1;
+                    color: $text-color;
+                }
+
+                .saveDateButton {
+                    background-color: #005a0b;
+                    color: $button-text-color;
+                    
+                    &:hover {
+                        background-color: #008710;
+                    }
                 }
             }
         }
