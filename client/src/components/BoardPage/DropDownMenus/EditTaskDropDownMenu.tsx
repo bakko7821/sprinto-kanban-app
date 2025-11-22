@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from "react";
-import { ArchiveIcon, CopyIcon, OpenIcon, TagsIcon, TimeAddIcon, TrashIcon, UnknowUserIcon } from "../../../assets/icons"
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import { ArchiveIcon, CopyIcon, ErrorIcon, OpenIcon, SuccesIcon, TagsIcon, TimeAddIcon, TrashIcon, UnknowUserIcon } from "../../../assets/icons"
 import type { Task } from "../../../utils/types";
 import { ChangeTagsDropDownMenu } from "./ChangeTagsDropDownMenu";
 import axios from "axios";
 import { ConfirmAlert } from "../../Alerts/ConfirmAlert";
 import { SetDateDropDownMenu } from "./SetDateDropDownMenu";
+import { NotificationAlert } from "../../Alerts/NotificationAlert";
 
 interface EditTaskDropDownMenuProps {
     taskRef: React.RefObject<HTMLDivElement | null>;
@@ -22,6 +23,7 @@ export const EditTaskDropDownMenu = ({onSetDate, onSetExecutor, onUpdate, onClos
     const [isEditingDate, setIsEditingDate] = useState(false)
     const menuRef = useRef<HTMLDivElement | null>(null);
     const [showAlert, setShowAlert] = useState(false)
+    const [alert, setAlert] = useState<ReactNode | null>(null);
             
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
@@ -48,6 +50,34 @@ export const EditTaskDropDownMenu = ({onSetDate, onSetExecutor, onUpdate, onClos
         setIsEditingDate(false)
     }
 
+    const copyToClipboard = async (text: string): Promise<void> => {
+        try {
+            await navigator.clipboard.writeText(text);
+
+            setAlert(
+                <NotificationAlert 
+                    text="Задача скопированна!" 
+                    icon={<SuccesIcon />} 
+                />
+            );
+
+            setTimeout(() => setAlert(null), 2000);
+
+        } catch (err) {
+            console.error("Ошибка копирования:", err);
+
+            setAlert(
+                <NotificationAlert 
+                    text="Ошибка копирования" 
+                    icon={<ErrorIcon />}
+                />
+            );
+
+            setTimeout(() => setAlert(null), 2000);
+        }
+    };
+
+
     return (
         <>
         <div 
@@ -60,7 +90,7 @@ export const EditTaskDropDownMenu = ({onSetDate, onSetExecutor, onUpdate, onClos
             <button className={`changeTagsButton flex g8 ${!isEditingTags ? "" : "active"}`} onClick={() => {setIsEditingTags((prev) => !prev)}}><TagsIcon /> Изменить метки</button>
             <button className="selectUserButton flex g8" onClick={() => onSetExecutor()}><UnknowUserIcon /> Назначить исполнителя</button>
             <button className={`selectDeadlineButton flex g8 ${!isEditingDate ? "" : "active"}`} onClick={() => {setIsEditingDate((prev) => !prev)}}><TimeAddIcon /> Указать дедлайн</button>
-            <button className="copyButton flex g8"><CopyIcon /> Копировать</button>
+            <button className="copyButton flex g8" onClick={() => copyToClipboard(task.name)}><CopyIcon /> Копировать</button>
             <button className="archiveButton flex g8" onClick={() => onUpdate(task.id, {isArchive: true})}><ArchiveIcon /> Архивировать</button>
             <button className="deleteButton flex g8" onClick={() => setShowAlert(true)}><TrashIcon /> Удалить</button>
 
@@ -74,6 +104,8 @@ export const EditTaskDropDownMenu = ({onSetDate, onSetExecutor, onUpdate, onClos
                     onCancel={() => setShowAlert(false)}
                 />
             )}
+
+            {alert}
 
             {isEditingTags && (
                 <ChangeTagsDropDownMenu onClose={handleCloseDropDown} task={task} onChangeTags={onChangeTags} />

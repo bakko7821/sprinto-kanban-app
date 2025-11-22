@@ -59,3 +59,12 @@
   60% { transform: translateY(0); }
   100% { transform: translateY(0); }
 }
+
+@keyframes fade {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
