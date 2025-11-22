@@ -10,6 +10,7 @@ import { DropDownMenuNotification } from "./DropDownMenus/DropDownMenuNotificati
 import { DropDownMenuHelp } from "./DropDownMenus/DropDownMenuHelp"
 import { useLogout } from "../../hooks/LogoutContext"
 import { DropDownCreateBoard } from "./DropDownMenus/DropDownCreateBoad"
+import { UserAvatar } from "../userAvatar"
 
 export const Header = () => {
     const { isLoggedOut } = useLogout();
@@ -80,16 +81,7 @@ export const Header = () => {
                     <button className="bellButton flex-center" onClick={() => openMenu('notificationMenu')}><BellIcon /></button>
                     <button className="helpButton flex-center" onClick={() => openMenu('helpMenu')}><HelpIcon /></button>
                 </nav>
-                <div className="userAvatar" onClick={() => openMenu('userMenu')}>
-                    <div className="glow"></div>
-                    {user?.avatarImage ? (
-                        <img src={`http://localhost:5000/uploads/${user.avatarImage}`} alt="" className="avatar" />
-                    ) : (
-                        <div className="avatar flex-center">
-                            <UserFilledIcon />
-                        </div>
-                    )}
-                </div>
+                <UserAvatar user={user} />
             </div>
                     
             {dropDownMenuUserStatus && <DropDownMenuUser onClose={handleCloseMenu} user={user} />}

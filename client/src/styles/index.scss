@@ -158,3 +158,51 @@ button.moreButton {
         }
     }
 }
+
+.userAvatar {
+    cursor: pointer;
+    position: relative;
+    width: 36px;
+    height: 36px;
+    transition: all 0.5s;
+
+    .glow {
+        z-index: 1;
+        opacity: 0;
+        transition: all 0.5s;
+        filter: blur(10px);
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: $text-color;
+    }
+
+    .avatarContent {
+        width: 100%;
+        height: 100%;
+        border-radius: 100%;
+        background-color: $background-color;
+        position: relative;
+        z-index: 2;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        span {
+            font-weight: 500;
+            font-size: $rem1;
+            color: $second-text-color;
+            line-height: 1.5;
+            text-transform: uppercase;
+        }
+    }
+
+    &:hover {
+        .glow {
+            opacity: 1;
+        }
+    }
+}

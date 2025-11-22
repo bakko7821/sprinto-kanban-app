@@ -8,6 +8,7 @@ import { useDraggable, useDroppable } from "@dnd-kit/core";
 import './columnsComponent.scss'
 
 interface ColumnComponentProps {
+    boardId: number | undefined;
     column: Column;
     tasks: Task[];
     onTasksChange: (tasks: Task[]) => void;
@@ -18,7 +19,7 @@ interface ColumnComponentProps {
 }
 
 
-export const ColumnComponent = ({fetchColumnsAndTasks, column, tasks, onAddTask, onDeleteColumn, onDeleteTask, onTasksChange }: ColumnComponentProps) => {
+export const ColumnComponent = ({boardId, fetchColumnsAndTasks, column, tasks, onAddTask, onDeleteColumn, onDeleteTask, onTasksChange }: ColumnComponentProps) => {
     const { setNodeRef: setDroppableRef } = useDroppable({ id: column.id });
     const [isAdding, setIsAdding] = useState(false)
     const [isOpenMenu, setIsOpenMenu] = useState(false)
@@ -111,6 +112,7 @@ export const ColumnComponent = ({fetchColumnsAndTasks, column, tasks, onAddTask,
                 {tasks.map((task) => {
                     return (
                         <TaskComponent
+                            boardId={boardId}
                             key={task.id}
                             task={task}
                             onDone={handleDoneTask}

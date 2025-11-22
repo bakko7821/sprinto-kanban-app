@@ -6,9 +6,11 @@ import axios from "axios";
 import { ConfirmAlert } from "../../Alerts/ConfirmAlert";
 import { SetDateDropDownMenu } from "./SetDateDropDownMenu";
 import { NotificationAlert } from "../../Alerts/NotificationAlert";
+import { SetExecutorDropDownMenu } from "./SetExecutorDropDownMenu";
 
 interface EditTaskDropDownMenuProps {
     taskRef: React.RefObject<HTMLDivElement | null>;
+    boardId: number | undefined;
     task: Task
     onUpdate: (id: number, updated: Partial<Task>) => void;
     onClose: () => void;
@@ -18,9 +20,10 @@ interface EditTaskDropDownMenuProps {
     onDeleteTask: (id: number) => void;
 }
 
-export const EditTaskDropDownMenu = ({onSetDate, onSetExecutor, onUpdate, onClose, taskRef, task, onDeleteTask, onChangeTags}: EditTaskDropDownMenuProps ) => {
+export const EditTaskDropDownMenu = ({boardId, onSetDate, onSetExecutor, onUpdate, onClose, taskRef, task, onDeleteTask, onChangeTags}: EditTaskDropDownMenuProps ) => {
     const [isEditingTags, setIsEditingTags] = useState(false)
     const [isEditingDate, setIsEditingDate] = useState(false)
+    const [isEditingExecutor, setIsEditingExecutor] = useState(false)
     const menuRef = useRef<HTMLDivElement | null>(null);
     const [showAlert, setShowAlert] = useState(false)
     const [alert, setAlert] = useState<ReactNode | null>(null);
@@ -48,6 +51,7 @@ export const EditTaskDropDownMenu = ({onSetDate, onSetExecutor, onUpdate, onClos
     const handleCloseDropDown = () => {
         setIsEditingTags(false)
         setIsEditingDate(false)
+        setIsEditingExecutor(false)
     }
 
     const copyToClipboard = async (text: string): Promise<void> => {
@@ -88,7 +92,7 @@ export const EditTaskDropDownMenu = ({onSetDate, onSetExecutor, onUpdate, onClos
         >
             <button className="openButton flex g8"><OpenIcon /> Открыть карту</button>
             <button className={`changeTagsButton flex g8 ${!isEditingTags ? "" : "active"}`} onClick={() => {setIsEditingTags((prev) => !prev)}}><TagsIcon /> Изменить метки</button>
-            <button className="selectUserButton flex g8" onClick={() => onSetExecutor()}><UnknowUserIcon /> Назначить исполнителя</button>
+            <button className={`selectDeadlineButton flex g8 ${!isEditingExecutor ? "" : "active"}`} onClick={() => {setIsEditingExecutor((prev) => !prev)}}><UnknowUserIcon /> Назначить исполнителя</button>
             <button className={`selectDeadlineButton flex g8 ${!isEditingDate ? "" : "active"}`} onClick={() => {setIsEditingDate((prev) => !prev)}}><TimeAddIcon /> Указать дедлайн</button>
             <button className="copyButton flex g8" onClick={() => copyToClipboard(task.name)}><CopyIcon /> Копировать</button>
             <button className="archiveButton flex g8" onClick={() => onUpdate(task.id, {isArchive: true})}><ArchiveIcon /> Архивировать</button>
@@ -113,6 +117,10 @@ export const EditTaskDropDownMenu = ({onSetDate, onSetExecutor, onUpdate, onClos
 
             {isEditingDate && (
                 <SetDateDropDownMenu onSetDate={onSetDate} onClose={handleCloseDropDown}/>
+            )}
+
+            {isEditingExecutor && (
+                <SetExecutorDropDownMenu task={task} boardId={boardId} onUpdate={onUpdate} onClose={handleCloseDropDown}/>
             )}
         </div>
         </>

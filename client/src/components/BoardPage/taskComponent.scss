@@ -20,6 +20,7 @@
     }
 
     .buttonsBox {
+        z-index: 999;
         width: fit-content;
         height: 100%;
         border-radius: 12px;
@@ -381,6 +382,76 @@
                 }
             }
         }
+
+        .setExecutorDropDownMenu {
+            cursor: default;
+            min-width: 103%;
+            width: fit-content;
+            position: absolute;
+            left: 0;
+            top: 144px;
+            z-index: 100;
+            background-color: $background-card-color;
+            border-radius: 12px 20px 20px 20px;
+            overflow: hidden;
+
+            .setExecutorHeader{
+                align-items: center;
+                width: 100%;
+                padding: 8px 16px;
+
+                span {
+                    white-space: nowrap;
+                    color: $text-color;
+                    font-weight: 500;
+                    font-size: $rem1-5;
+                    line-height: 1.5;
+                }
+            }
+
+            .nullMessage {
+                width: 100%;
+                padding: 8px;
+                font-size: $rem1;
+                color: $second-text-color;
+                line-height: 1.5;
+                font-weight: 500;
+            }
+
+            .usersList {
+                .userBox {
+                    align-items: center;
+                    padding: 8px;
+                    cursor: pointer;
+                    transition: all 0.5s;
+                    background-color: transparent;
+
+                    .usernameText {
+                        color: $text-color;
+                        font-weight: 500;
+                        font-size: $rem1;
+                        line-height: 1.5;
+                    }
+
+                    .emailText {
+                        color: $second-text-color;
+                        font-weight: 500;
+                        font-size: $rem0_875;
+                        line-height: 1.5;
+                    }
+
+                    &:hover {
+                        background-color: $background-card-hover-color;
+                    }
+
+                    .userAvatar {
+                        .glow {
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -399,6 +470,7 @@
     z-index: 100 !important;
 
     .buttonsBox {
+        z-index: 999 !important;
         opacity: 0 !important;
     }
 }
@@ -407,6 +479,7 @@
     z-index: 999 !important;
 
     .buttonsBox {
+        z-index: 999 !important;
         opacity: 0 !important;
     }
 }

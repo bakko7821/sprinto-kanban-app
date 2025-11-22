@@ -1,19 +1,21 @@
 import { useCallback, useEffect, useRef, useState, type RefObject } from "react";
-import type { Tag, Task } from "../../utils/types";
+import type { User, Tag, Task } from "../../utils/types";
 import { ArchiveIcon, CrossIcon, DoneIcon, EditIcon2, TimeIcon } from "../../assets/icons";
 import { EditTaskDropDownMenu } from "./DropDownMenus/EditTaskDropDownMenu";
 import axios from "axios";
 import { useDraggable } from "@dnd-kit/core";
 import './taskComponent.scss'
+import { UserAvatar } from "../userAvatar";
 
 interface TaskComponentsProps {
+    boardId: number | undefined;
     task: Task;
     onDone: () => void;
     onUpdate: (id: number, updated: Partial<Task>) => void;
     onDeleteTask: (id: number) => void;
 }
 
-export const TaskComponent = ({task, onDone, onDeleteTask, onUpdate}: TaskComponentsProps) => {
+export const TaskComponent = ({boardId, task, onDone, onDeleteTask, onUpdate}: TaskComponentsProps) => {
     const [isDone, setIsDone] = useState(task.isDone)
     const [isArchive, setIsArchive] = useState(task.isArchive)
     const [isEdit, setIsEdit] = useState(false)
@@ -22,6 +24,8 @@ export const TaskComponent = ({task, onDone, onDeleteTask, onUpdate}: TaskCompon
     const [formatedDate, setFormatedDate] = useState('')
     const [tagsId, setTagsId] = useState<number[]>(task.tags)
     const [renderTags, setRenderTags] = useState<Tag[]>([]);
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userId");
 
     const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
         id: task.id,
@@ -133,7 +137,6 @@ export const TaskComponent = ({task, onDone, onDeleteTask, onUpdate}: TaskCompon
 
 
     async function loadTagsByIds(ids: number[]) {
-        const token = localStorage.getItem("token");
         if (!token) return;
 
         try {
@@ -169,6 +172,31 @@ export const TaskComponent = ({task, onDone, onDeleteTask, onUpdate}: TaskCompon
             }
             });
         };
+    }
+
+    const [executors, setExecutors] = useState<User[]>([])
+
+    useEffect(() => {
+        fetchUsers(task.executorIds)
+    }, [task.executorIds])
+
+    async function fetchUsers(team: number[]) {
+        if (!token || !userId ) return;
+
+        try {
+            const usersData = await Promise.all(
+                team.map(async (userId) => {
+                    const response = await axios.get(`http://localhost:5000/api/users/${userId}`, {
+                        headers: { Authorization: `Bearer ${token}` },
+                    })
+                    return response.data;
+                })
+            )
+
+            setExecutors(usersData)
+        } catch (err) {
+            console.error("Ошибка при загрузке пользователей:", err);
+        }
     }
 
     return (
@@ -261,11 +289,20 @@ export const TaskComponent = ({task, onDone, onDeleteTask, onUpdate}: TaskCompon
                     </form>
                 )}
             </div>
-            <div className="taskBottomInfo flex g8" onMouseDown={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()}>
+            <div className="taskBottomInfo flex-between g8" onMouseDown={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()}>
                 {!task.deadline ? null : (
                     <div className={`dateBox flex-center g4 ${getDateBoxClass()}`}>
                         <TimeIcon />
                         <span>{formatedDate}</span>
+                    </div>
+                )}
+                {task.executorIds.length === 0 ? null : (
+                    <div className="executorsList">
+                        {executors.map((executor) => (
+                            <div className="executorBox" key={executor.id}>
+                                <UserAvatar user={executor}/>
+                            </div>
+                        ))}
                     </div>
                 )}
             </div>
@@ -273,7 +310,7 @@ export const TaskComponent = ({task, onDone, onDeleteTask, onUpdate}: TaskCompon
             {!isEdit ? (
                 null
             ) : (
-                <EditTaskDropDownMenu onSetDate={handleSetDate} onSetExecutor={handleSetExecutor} onUpdate={onUpdate} onClose={handleCloseDropDownMenu} taskRef={taskRef} task={task} onDeleteTask={onDeleteTask} onChangeTags={handleChangeTags}/>
+                <EditTaskDropDownMenu boardId={boardId} onSetDate={handleSetDate} onSetExecutor={handleSetExecutor} onUpdate={onUpdate} onClose={handleCloseDropDownMenu} taskRef={taskRef} task={task} onDeleteTask={onDeleteTask} onChangeTags={handleChangeTags}/>
             )}
         </div>
         </>

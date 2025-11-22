@@ -28,7 +28,7 @@ export const SetDateDropDownMenu = ({onSetDate, onClose}: SetDateDropDownMenuPro
 
 
     return (
-        <div className="setDateDropDownMenu">
+        <div className="setDateDropDownMenu flex-column g8">
             <div className="setDateHeader flex-between g8">
                 <span>Выберите дату</span>
                 <button className="closeMenu flex-center" onClick={() => onClose()}><CrossIcon /></button>

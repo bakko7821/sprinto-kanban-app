@@ -376,6 +376,7 @@ export const BoardPage = () => {
                 <div className="columnsBox flex g16">
                     {columns.map((column) => (
                     <ColumnComponent
+                        boardId={board?.id}
                         fetchColumnsAndTasks={fetchColumnsAndTasks}
                         key={column.id}
                         column={column}
@@ -414,6 +415,7 @@ export const BoardPage = () => {
                 <DragOverlay>
                     {activeTask ? (
                         <TaskComponent
+                            boardId={board?.id}
                             task={activeTask}
                             onDone={() => {}}
                             onUpdate={() => {}}

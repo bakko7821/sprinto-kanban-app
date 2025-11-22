@@ -88,4 +88,28 @@ router.put("/:id", authMiddleware, async(req: AuthRequest, res: Response) => {
     }
 })
 
+router.get("/team/:id", authMiddleware, async(req: AuthRequest, res: Response) => {
+    const userId = (req.user as any)?.id;
+    
+    if (!userId) {
+      return res.status(400).json({ message: "Некорректный токен" });
+    }
+
+    try {
+        const id = Number(req.params.id)
+
+        const board = await Board.findByPk(id) 
+
+        if (!board) {
+            return res.status(404).json({ message: "Задача не найдена" });
+        }
+
+        res.json(board.team)
+
+    } catch (error: unknown) {
+        console.log(error)
+        res.status(500).json({ message: "Ошибка при получение команды доски" });
+    }
+})
+
 export default router
