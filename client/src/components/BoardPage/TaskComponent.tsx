@@ -193,7 +193,7 @@ export const TaskComponent = ({task, onDone, onDeleteTask, onUpdate}: TaskCompon
                         </button>
                     </div>
                 ) : (
-                    <div className="buttonsBox flex-center g4">
+                    <div className="buttonsBox flex-column flex-center g4">
                         <button 
                             className="archiveButton flex-center"
                             onMouseDown={(e) => e.stopPropagation()}

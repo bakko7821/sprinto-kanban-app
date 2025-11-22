@@ -8,6 +8,7 @@ interface BoardAttrs {
   backgroundImage: string;
   isPrivate: boolean;
   ownerId: number;
+  team: number[];
 }
 
 interface BoardCreation extends Optional<BoardAttrs, "id"> {}
@@ -18,6 +19,7 @@ class Board extends Model<BoardAttrs, BoardCreation> implements BoardAttrs {
   public backgroundImage!: string;
   public isPrivate!: boolean;
   public ownerId!: number;
+  public team!: number[];
 }
 
 Board.init(
@@ -26,7 +28,12 @@ Board.init(
     name: { type: DataTypes.STRING, allowNull: false },
     backgroundImage: DataTypes.STRING,
     isPrivate: { type: DataTypes.BOOLEAN, defaultValue: false },
-    ownerId: { type: DataTypes.INTEGER, allowNull: false }
+    ownerId: { type: DataTypes.INTEGER, allowNull: false },
+    team: {
+      type: DataTypes.ARRAY(DataTypes.INTEGER),
+      allowNull: false,
+      defaultValue: []
+    }
   },
   {
     sequelize,

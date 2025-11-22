@@ -8,6 +8,7 @@ import { ColumnComponent } from "../components/BoardPage/ColumnComponent"
 import { closestCenter, DndContext, DragOverlay, type DragEndEvent, } from "@dnd-kit/core"
 import { TaskComponent } from "../components/BoardPage/TaskComponent"
 import { ArchiveDropDownMenu } from "../components/BoardPage/DropDownMenus/ArchiveDropDownMenu"
+import { ChangeVisibilityDropDownMenu } from "../components/BoardPage/DropDownMenus/ChangeVisibilityDropDownMenu"
 
 export const BoardPage = () => {
     const {id} = useParams()
@@ -23,6 +24,7 @@ export const BoardPage = () => {
     const [editIsPrivate, setEditIsPrivate] = useState(false)
 
     const [isOpenArchiveDropDown, setIsOpenArchiveDropDown] = useState(false)
+    const [isOpenChangeVisibilityDropDown, setIsOpenChangeVisibilityDropDown] = useState(false)
 
     const token = localStorage.getItem("token")
     const userId: string | null = localStorage.getItem("userId")
@@ -120,7 +122,6 @@ export const BoardPage = () => {
             await axios.put(
                 `http://localhost:5000/api/boards/${board.id}`,
                 {   name: boardName,
-                    isPrivate: editIsPrivate,
                     backgroundImage: backgroundUrl
                 },
                 {
@@ -147,6 +148,34 @@ export const BoardPage = () => {
             console.error("Ошибка при создании колонки:", err);
         }
     };
+
+    const handleChangePrivate = async (type: string) => {
+        console.log(type)
+        
+        if (type === 'private') {
+            setEditIsPrivate(true)
+        } else if (type === 'public') {
+            setEditIsPrivate(false)
+        }
+
+        console.log(editIsPrivate)
+
+        if (!token || !userId || !board?.id) return
+
+        try {
+            await axios.put(
+                `http://localhost:5000/api/boards/${board.id}`,
+                {   isPrivate: editIsPrivate },
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            );
+
+            console.log("доска измененна")
+        } catch (error: unknown) {
+            console.log(error)
+        }
+    }
 
     const handleCreateColumn = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -274,16 +303,6 @@ export const BoardPage = () => {
                         id="name"
                         value={boardName}
                         onChange={(e) => setBoardName(e.target.value)} />
-
-                        <label htmlFor="">Приватность доски: <span>{editIsPrivate ? 'Приватная' : 'Открытая'}</span></label>
-                        <button
-                            className="changePrivacyButton"
-                            type="button"
-                            onClick={() => setEditIsPrivate((prev) => !prev)}
-                        >
-                            {editIsPrivate ? <KeyIcon /> : <LockIcon />}
-                        </button>
-
                         <input
                             type="file"
                             id="backgroundUploadInput"
@@ -313,7 +332,9 @@ export const BoardPage = () => {
                         </div>
                     </form>
                 )}
-                <nav className={`headerNavigate flex-center g8 ${isOpenArchiveDropDown ? 'opened' : ''}`}>
+                <nav className={`headerNavigate flex-center g8 
+                    ${isOpenArchiveDropDown ? 'opened' : ''}
+                    ${isOpenChangeVisibilityDropDown ? 'opened' : ''}`}>
                     <button className="upgradeButton"><EditIcon3 /></button>
                     <button 
                         className="archiveButton" 
@@ -324,11 +345,17 @@ export const BoardPage = () => {
                     <button className="autoButton" id="hammerButton"><HammerIcon /></button>
                     <button className="sortButton"><SortIcon /></button>
                     <button className="favoriteButton"><HeartIcon /></button>
-                    <button className="visibilityButton"><UsersIcon /></button>
+                    <button 
+                        className="visibilityButton"
+                        onClick={() => {setIsOpenChangeVisibilityDropDown((prev) => !prev)}}
+                    >
+                        <UsersIcon />
+                        </button>
                     <button className="shareButton">Поделиться</button>
                     <button className="moreButton"><MoreIcon /></button>
 
                     {!isOpenArchiveDropDown ? null : <ArchiveDropDownMenu board={board} fetchColumnsAndTasks={fetchColumnsAndTasks} onDeleteTask={handleDeleteTask} onClose={() => setIsOpenArchiveDropDown((prev) => !prev)}/>}
+                    {!isOpenChangeVisibilityDropDown ? null : <ChangeVisibilityDropDownMenu onUpdatePrivate={handleChangePrivate} onClose={() => setIsOpenChangeVisibilityDropDown((prev) => !prev)}/>}
                 </nav>
             </div>
             <DndContext

@@ -20,6 +20,7 @@ router.post("/:id", authMiddleware, async(req: AuthRequest, res: Response) => {
             isPrivate,
             backgroundImage: "",
             ownerId: boardOwnerId,
+            team: [ownerId, ]
         });
 
         res.json(newBoard);
