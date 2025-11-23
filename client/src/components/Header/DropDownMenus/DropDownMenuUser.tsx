@@ -1,6 +1,7 @@
-import { useEffect, useRef } from "react";
+import { use, useEffect, useRef } from "react";
 import type { User } from "../../../utils/types";
 import { useLogout } from "../../../hooks/LogoutContext";
+import { useNavigate } from "react-router-dom";
 
 interface DropDownMenuUserProps {
     onClose: () => void;
@@ -10,6 +11,7 @@ interface DropDownMenuUserProps {
 export const DropDownMenuUser = ({ onClose, user }: DropDownMenuUserProps) => {
     const { setIsLoggedOut } = useLogout();
     const menuRef = useRef<HTMLDivElement | null>(null);
+    const navigate = useNavigate()
 
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
@@ -41,7 +43,7 @@ export const DropDownMenuUser = ({ onClose, user }: DropDownMenuUserProps) => {
             <span className="plug"></span>
             <span className="headingText">Sprinto</span>
             <div className="buttonsBox flex-column g4">
-                <button className="dropDownMenuButton" id="editProfile">Изменить профиль</button>
+                <button className="dropDownMenuButton" id="editProfile" onClick={() => navigate(`/edit-profile/${user?.id}`)}>Изменить профиль</button>
                 <button className="dropDownMenuButton" id="createBoard">Создать доску</button>
                 <button className="dropDownMenuButton" id="changeTheme">Выбор темы</button>
             </div>

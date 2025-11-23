@@ -29,8 +29,6 @@ export const BoardPage = () => {
     const token = localStorage.getItem("token")
     const userId: string | null = localStorage.getItem("userId")
 
-    
-
     useEffect(() => {
         if (!token || !userId) return;
 

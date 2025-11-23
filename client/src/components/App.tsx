@@ -2,10 +2,11 @@
 import { Routes, Route } from "react-router-dom";
 import AuthLayout from "./layouts/AuthLayout";
 import MainLayout from "./layouts/MainLayout";
-import { AuthPage } from "../pages/auth/AuthPage";
+import { AuthPage } from "../pages/AuthPage";
 import { HomePage } from "../pages/HomePage";
 import { NotFoundPage } from "../pages/NotFoundPage";
 import { BoardPage } from "../pages/BoardPage";
+import { EditProfilePage } from "../pages/EditProfilePage";
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
       <Route element={<MainLayout />}>
         <Route path="/" element={<HomePage />} />
         <Route path="/board/:id" element={<BoardPage />} />
+        <Route path="/edit-profile/:id" element={<EditProfilePage />} />
       </Route>
     </Routes>
   );
