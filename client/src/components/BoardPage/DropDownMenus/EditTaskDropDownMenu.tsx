@@ -2,7 +2,6 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { ArchiveIcon, CopyIcon, ErrorIcon, OpenIcon, SuccesIcon, TagsIcon, TimeAddIcon, TrashIcon, UnknowUserIcon } from "../../../assets/icons"
 import type { Task } from "../../../utils/types";
 import { ChangeTagsDropDownMenu } from "./ChangeTagsDropDownMenu";
-import axios from "axios";
 import { ConfirmAlert } from "../../Alerts/ConfirmAlert";
 import { SetDateDropDownMenu } from "./SetDateDropDownMenu";
 import { NotificationAlert } from "../../Alerts/NotificationAlert";
@@ -20,7 +19,7 @@ interface EditTaskDropDownMenuProps {
     onDeleteTask: (id: number) => void;
 }
 
-export const EditTaskDropDownMenu = ({boardId, onSetDate, onSetExecutor, onUpdate, onClose, taskRef, task, onDeleteTask, onChangeTags}: EditTaskDropDownMenuProps ) => {
+export const EditTaskDropDownMenu = ({boardId, onSetDate, onUpdate, onClose, taskRef, task, onDeleteTask, onChangeTags}: EditTaskDropDownMenuProps ) => {
     const [isEditingTags, setIsEditingTags] = useState(false)
     const [isEditingDate, setIsEditingDate] = useState(false)
     const [isEditingExecutor, setIsEditingExecutor] = useState(false)
@@ -65,7 +64,7 @@ export const EditTaskDropDownMenu = ({boardId, onSetDate, onSetExecutor, onUpdat
                 />
             );
 
-            setTimeout(() => setAlert(null), 2000);
+            setTimeout(() => setAlert(null), 4000);
 
         } catch (err) {
             console.error("Ошибка копирования:", err);
@@ -77,7 +76,7 @@ export const EditTaskDropDownMenu = ({boardId, onSetDate, onSetExecutor, onUpdat
                 />
             );
 
-            setTimeout(() => setAlert(null), 2000);
+            setTimeout(() => setAlert(null), 4000);
         }
     };
 

@@ -149,6 +149,8 @@
             .archiveDropDown {
                 min-width: 270px;
                 right: 0px;
+                overflow: hidden;
+                max-height: 80vh;
                 position: absolute;
                 top: 100%;
                 background-color: $background-card-color;
@@ -171,43 +173,63 @@
                     }
                 }
 
-                .taskMenu {
-                    .buttonsBox {
-                        align-items: center;
+                .tasksList {
+                    padding-right: 8px;
+                    overflow-y: scroll;
+                    overflow-x: hidden;
 
-                        .circle {
-                            width: 4px;
-                            height: 4px;
-                            border-radius: 100%;
-                            background-color: $second-text-color;
-                        }
+                    .taskMenu {
+                        .buttonsBox {
+                            align-items: center;
 
-                        button {
-                            color: $second-text-color;
-                            background-color: transparent;
-                            padding: 0;
-                            font-size: $rem0_875;
-                            font-weight: 500;
-                            text-decoration: none;
-                            transition: all 0.5s;
-
-                            &:hover {
-                                text-decoration: underline;
+                            .circle {
+                                width: 4px;
+                                height: 4px;
+                                border-radius: 100%;
+                                background-color: $second-text-color;
                             }
-                        }
 
-                        button.recoveryButton {
-                            &:hover {
-                                color: #006915;
+                            button {
+                                color: $second-text-color;
+                                background-color: transparent;
+                                padding: 0;
+                                font-size: $rem0_875;
+                                font-weight: 500;
+                                text-decoration: none;
+                                transition: all 0.5s;
+
+                                &:hover {
+                                    text-decoration: underline;
+                                }
                             }
-                        }
 
-                        button.deleteButton {
-                            &:hover {
-                                color: #A80303;
+                            button.recoveryButton {
+                                &:hover {
+                                    color: #006915;
+                                }
+                            }
+
+                            button.deleteButton {
+                                &:hover {
+                                    color: #A80303;
+                                }
                             }
                         }
                     }
+                }
+
+                .tasksList::-webkit-scrollbar {
+                    width: 4px;
+                }
+
+                .tasksList::-webkit-scrollbar-track {
+                    background: transparent;
+                }
+
+                .tasksList::-webkit-scrollbar-thumb {
+                    background-color: $main-color;    /* цвет плашки */
+                    border-radius: 20px;
+                    border: none;
                 }
             }
 

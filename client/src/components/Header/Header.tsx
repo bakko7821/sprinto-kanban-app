@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom"
-import { BellIcon, KanbanIcon, HelpIcon, UserFilledIcon } from "../../assets/icons"
+import { BellIcon, KanbanIcon, HelpIcon, } from "../../assets/icons"
 import "./Header.scss"
 import { SearchInput } from "./SearchInput"
 import { useEffect, useState } from "react"
@@ -10,7 +10,7 @@ import { DropDownMenuNotification } from "./DropDownMenus/DropDownMenuNotificati
 import { DropDownMenuHelp } from "./DropDownMenus/DropDownMenuHelp"
 import { useLogout } from "../../hooks/LogoutContext"
 import { DropDownCreateBoard } from "./DropDownMenus/DropDownCreateBoad"
-import { UserAvatar } from "../userAvatar"
+import { UserAvatar } from "../UserAvatar"
 
 export const Header = () => {
     const { isLoggedOut } = useLogout();
@@ -81,7 +81,9 @@ export const Header = () => {
                     <button className="bellButton flex-center" onClick={() => openMenu('notificationMenu')}><BellIcon /></button>
                     <button className="helpButton flex-center" onClick={() => openMenu('helpMenu')}><HelpIcon /></button>
                 </nav>
-                <UserAvatar user={user} />
+                <div className="" onClick={() => openMenu('userMenu')}>
+                    <UserAvatar user={user}/>
+                </div>
             </div>
                     
             {dropDownMenuUserStatus && <DropDownMenuUser onClose={handleCloseMenu} user={user} />}

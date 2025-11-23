@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
-import { AddIcon, CrossIcon, MoreIcon } from "../../assets/icons";
+import { useState, type ReactNode } from "react";
+import { AddIcon, CrossIcon, ErrorIcon, MoreIcon, SuccesIcon } from "../../assets/icons";
 import type { Task, Column } from "../../utils/types";
 import axios from "axios";
 import { TaskComponent } from "./TaskComponent";
 import { ColumnDropDownMenu } from "./DropDownMenus/ColumnDropDownMenu";
-import { useDraggable, useDroppable } from "@dnd-kit/core";
+import { useDroppable } from "@dnd-kit/core";
 import './columnsComponent.scss'
+import { NotificationAlert } from "../Alerts/NotificationAlert";
 
 interface ColumnComponentProps {
     boardId: number | undefined;
@@ -24,6 +25,7 @@ export const ColumnComponent = ({boardId, fetchColumnsAndTasks, column, tasks, o
     const [isAdding, setIsAdding] = useState(false)
     const [isOpenMenu, setIsOpenMenu] = useState(false)
     const [taskName, setTaskName] = useState("")
+    const [alert, setAlert] = useState<ReactNode | null>(null);
 
     const token = localStorage.getItem("token")
     const userId = localStorage.getItem("userId")
@@ -49,8 +51,26 @@ export const ColumnComponent = ({boardId, fetchColumnsAndTasks, column, tasks, o
             setTaskName("");
             setIsAdding(false);
 
+            setAlert(
+                <NotificationAlert 
+                    text="Задача успешно создана!" 
+                    icon={<SuccesIcon />} 
+                />
+            );
+
+            setTimeout(() => setAlert(null), 4000);
+
         } catch (err) {
             console.error("Ошибка при создании задачи:", err);
+
+            setAlert(
+                <NotificationAlert 
+                    text="Ошибка при создании задачи" 
+                    icon={<ErrorIcon />}
+                />
+            );
+
+            setTimeout(() => setAlert(null), 4000);
         }
     };
 
@@ -69,13 +89,31 @@ export const ColumnComponent = ({boardId, fetchColumnsAndTasks, column, tasks, o
             const updatedTask = response.data;
 
             const newTaskList = tasks
-                .map(t => (t.id === id ? updatedTask : t)) // заменяем задачу
-                .filter(t => !t.isArchive); // убираем архивные задачи
+                .map(t => (t.id === id ? updatedTask : t))
+                .filter(t => !t.isArchive);
 
             onTasksChange(newTaskList);
 
+            setAlert(
+                <NotificationAlert 
+                    text="Задача успешно измененна!" 
+                    icon={<SuccesIcon />} 
+                />
+            );
+
+            setTimeout(() => setAlert(null), 4000);
+
         } catch (err) {
             console.error("Ошибка при обновлении задачи", err);
+
+            setAlert(
+                <NotificationAlert 
+                    text="Ошибка при изменении задачи" 
+                    icon={<ErrorIcon />}
+                />
+            );
+
+            setTimeout(() => setAlert(null), 4000);
         }
     };
 
@@ -91,7 +129,16 @@ export const ColumnComponent = ({boardId, fetchColumnsAndTasks, column, tasks, o
             
             onDeleteColumn(column.id);
             setIsOpenMenu(false);
-            
+
+            setAlert(
+                <NotificationAlert 
+                    text="Колонка удалена!" 
+                    icon={<SuccesIcon />} 
+                />
+            );
+
+            setTimeout(() => setAlert(null), 4000);
+
             await axios.delete(
                 `http://localhost:5000/api/columns/${column.id}`,
                 { headers: { Authorization: `Bearer ${token}` } }
@@ -99,6 +146,15 @@ export const ColumnComponent = ({boardId, fetchColumnsAndTasks, column, tasks, o
 
         } catch (err) {
             console.error("Ошибка при удалении колонки:", err);
+
+            setAlert(
+                <NotificationAlert 
+                    text="Ошибка при удалении клонки" 
+                    icon={<ErrorIcon />}
+                />
+            );
+
+            setTimeout(() => setAlert(null), 4000);
         }
     };
 
@@ -142,6 +198,8 @@ export const ColumnComponent = ({boardId, fetchColumnsAndTasks, column, tasks, o
                     </div>
                 </form>
             )}
+
+            {alert}
 
             {!isOpenMenu ? null : (
                 <ColumnDropDownMenu fetchColumnsAndTasks={fetchColumnsAndTasks} column={column} onClose={handleCloseMenu} onDelete={handleDeleteColumn}/>

@@ -59,17 +59,12 @@
 }
 
 .notificationAlert {
-    animation: fade 2s ease-in-out;
-    display: flex;
-    align-items: start;
-    justify-content: center;
-    padding: 32px;
+    animation: fade 4s ease-in-out;
+    padding: 8px;
     z-index: 999;
-    width: 100vw;
-    height: 100vh;
     position: fixed;
-    left: 0px;
-    top: 0px;
+    right: 16px;
+    bottom: 16px;
 
     .notificationAlertContent {
         width: fit-content;

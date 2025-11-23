@@ -1,10 +1,8 @@
 import { useEffect, useRef, useState } from "react"
-import { useParams } from "react-router-dom"
 import axios from "axios"
 import type { Board, Task } from "../../../utils/types"
-import { BackIcon, CrossIcon, DoneIcon } from "../../../assets/icons"
+import { CrossIcon} from "../../../assets/icons"
 import { TaskComponent } from "../TaskComponent"
-import { ConfirmAlert } from "../../Alerts/ConfirmAlert"
 
 interface ArchiveDropDownMenuProps {
     board: Board | null
@@ -57,7 +55,7 @@ export const ArchiveDropDownMenu = ({board, fetchColumnsAndTasks, onDeleteTask, 
         let updated = { isArchive: false };
 
         try {
-            const response = await axios.put(
+            await axios.put(
                 `http://localhost:5000/api/tasks/${task.id}`,
                 updated,
                 { headers: { Authorization: `Bearer ${token}` } }
@@ -89,9 +87,10 @@ export const ArchiveDropDownMenu = ({board, fetchColumnsAndTasks, onDeleteTask, 
                     <div className="taskMenu flex-column g4" key={archivedTask.id}>
                         <TaskComponent 
                             task={archivedTask}
-                            onDone={() => {}}
-                            onUpdate={() => {}}
-                            onDeleteTask={onDeleteTask}/>
+                            onDone={() => { } }
+                            onUpdate={() => { } }
+                            onDeleteTask={onDeleteTask} 
+                            boardId={board?.id}/>
                         <div className="buttonsBox flex g8">
                             <button 
                                 className="recoveryButton"

@@ -1,11 +1,11 @@
-import { useCallback, useEffect, useRef, useState, type RefObject } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode, } from "react";
 import type { User, Tag, Task } from "../../utils/types";
 import { ArchiveIcon, CrossIcon, DoneIcon, EditIcon2, TimeIcon } from "../../assets/icons";
 import { EditTaskDropDownMenu } from "./DropDownMenus/EditTaskDropDownMenu";
 import axios from "axios";
 import { useDraggable } from "@dnd-kit/core";
 import './taskComponent.scss'
-import { UserAvatar } from "../userAvatar";
+import { UserAvatar } from "../UserAvatar";
 
 interface TaskComponentsProps {
     boardId: number | undefined;
@@ -15,17 +15,17 @@ interface TaskComponentsProps {
     onDeleteTask: (id: number) => void;
 }
 
-export const TaskComponent = ({boardId, task, onDone, onDeleteTask, onUpdate}: TaskComponentsProps) => {
+export const TaskComponent = ({boardId, task, onDeleteTask, onUpdate}: TaskComponentsProps) => {
     const [isDone, setIsDone] = useState(task.isDone)
-    const [isArchive, setIsArchive] = useState(task.isArchive)
+    const [, setIsArchive] = useState(task.isArchive)
     const [isEdit, setIsEdit] = useState(false)
     const [taskName, setTaskName] = useState(task.name)
-    const [deadline, setDeadline] = useState(task.deadline)
     const [formatedDate, setFormatedDate] = useState('')
-    const [tagsId, setTagsId] = useState<number[]>(task.tags)
+    const [tagsId] = useState<number[]>(task.tags)
     const [renderTags, setRenderTags] = useState<Tag[]>([]);
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("userId");
+    const [alert] = useState<ReactNode | null>(null);
 
     const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
         id: task.id,
@@ -312,6 +312,8 @@ export const TaskComponent = ({boardId, task, onDone, onDeleteTask, onUpdate}: T
             ) : (
                 <EditTaskDropDownMenu boardId={boardId} onSetDate={handleSetDate} onSetExecutor={handleSetExecutor} onUpdate={onUpdate} onClose={handleCloseDropDownMenu} taskRef={taskRef} task={task} onDeleteTask={onDeleteTask} onChangeTags={handleChangeTags}/>
             )}
+
+            {alert}
         </div>
         </>
     )
