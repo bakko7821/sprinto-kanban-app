@@ -24,7 +24,6 @@ export const Login = () => {
 
             setMessage(response.data.msg ?? `Добро пожаловать`);
             navigate("/");
-            window.location.reload();
         } catch (err) {
             const axiosErr = err as AxiosError<{ msg?: string }>;
             setMessage(axiosErr?.response?.data?.msg ?? "Ошибка");
@@ -55,7 +54,7 @@ export const Login = () => {
                         placeholder="Пароль"/>
                     <label htmlFor="password">Пароль</label>
                 </div>
-                <button className="handleSubmitButton flex-center g4" onClick={() => handleSubmit}><LogInIcon /> Войти</button>
+                <button className="handleSubmitButton flex-center g4" type="submit"><LogInIcon /> Войти</button>
                 <Link to={"/auth/register"}>пройти регистрацию</Link>
             </form>
 

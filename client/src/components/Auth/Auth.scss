@@ -99,6 +99,10 @@
             line-height: 1.5;
             font-weight: 500;
 
+            svg {
+                color: $button-text-color !important;
+            }
+
             &:hover {
                 background-color: $main-hover-color;
 

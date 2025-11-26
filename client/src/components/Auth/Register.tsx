@@ -15,29 +15,43 @@ export const Register = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post("http://localhost:5000/api/auth/register", {
+            await axios.post("http://localhost:5000/api/auth/register", {
                 username,
                 email,
                 password
             });
 
-
-            localStorage.setItem("token", response.data.token);
-            localStorage.setItem("authUser", JSON.stringify(response.data.user));
-
-            setMessage(response.data.msg ?? `Добро пожаловать, ${response.data.user.username}!`);
-            navigate("/");
-            window.location.reload();
-        } catch (err) {
-            const axiosErr = err as AxiosError<{ msg?: string }>;
+            await handleLogin(username, password);
+        } catch (error) {
+            const axiosErr = error as AxiosError<{ msg?: string }>;
             setMessage(axiosErr?.response?.data?.msg ?? "Ошибка");
         }
     };
 
+
+    const handleLogin = async (loginUsername: string, loginPassword: string) => {
+        try {
+            const response = await axios.post("http://localhost:5000/api/auth/login", {
+                username: loginUsername,
+                password: loginPassword
+            });
+
+            localStorage.setItem("token", response.data.token);
+            localStorage.setItem("userId", response.data.id);
+
+            setMessage(response.data.msg ?? `Добро пожаловать`);
+            navigate("/");
+        } catch (error: unknown) {
+            const axiosErr = error as AxiosError<{ msg?: string }>;
+            setMessage(axiosErr?.response?.data?.msg ?? "Ошибка");
+        }
+    };
+
+
     return (
         <div className="registerComponent flex-column flex-center g16">
-            <span className="titleText">Авторизация</span>
-            <form onSubmit={handleSubmit} className="loginForm flex-column g12">
+            <span className="titleText">Регистрация</span>
+            <form onSubmit={handleSubmit} className="registerForm flex-column g12">
                 <div className="floating-input">
                     <input 
                         type="text"
@@ -68,7 +82,7 @@ export const Register = () => {
                         placeholder="Пароль"/>
                     <label htmlFor="password">Пароль</label>
                 </div>
-                <button className="handleSubmitButton flex-center g4" onClick={() => handleSubmit}><KeyIcon /> Регистрация</button>
+                <button className="handleSubmitButton flex-center g4" type="submit"><KeyIcon /> Регистрация</button>
                 <Link to={"/auth/login"}>у меня уже есть аккаунт</Link>
             </form>
 

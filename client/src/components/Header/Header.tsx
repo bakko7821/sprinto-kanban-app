@@ -25,6 +25,8 @@ export const Header = () => {
     const userId: string | null = localStorage.getItem("userId")
 
     useEffect(() => {
+        if (!token || !userId) return
+        
         async function fetchUser() {
             try {
                 const res = await axios.get(`http://localhost:5000/api/users/${Number(userId)}`,{
