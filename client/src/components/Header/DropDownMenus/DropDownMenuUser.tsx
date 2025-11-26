@@ -33,6 +33,19 @@ export const DropDownMenuUser = ({ onClose, user }: DropDownMenuUserProps) => {
         setTimeout(() => window.location.reload(), 1000);
     }
 
+    const toggleTheme = () => {
+        const isDark = document.documentElement.classList.toggle("dark-theme");
+        localStorage.setItem("theme", isDark ? "dark" : "light");
+    };
+
+    useEffect(() => {
+        const savedTheme = localStorage.getItem("theme");
+
+        if (savedTheme === "dark") {
+            document.documentElement.classList.add("dark-theme");
+        }
+    }, []);
+
     return (
         <div ref={menuRef} className="dropDownMenuUser flex-column g8">
             <span className="headingText">Учетная запись</span>
@@ -45,7 +58,7 @@ export const DropDownMenuUser = ({ onClose, user }: DropDownMenuUserProps) => {
             <div className="buttonsBox flex-column g4">
                 <button className="dropDownMenuButton" id="editProfile" onClick={() => navigate(`/edit-profile/${user?.id}`)}>Изменить профиль</button>
                 <button className="dropDownMenuButton" id="createBoard">Создать доску</button>
-                <button className="dropDownMenuButton" id="changeTheme">Выбор темы</button>
+                <button className="dropDownMenuButton" id="themeToggleBtn" onClick={toggleTheme}>Сменить тему</button>
             </div>
             <span className="plug"></span>
             <div className="buttonsBox flex-column g4">

@@ -189,7 +189,11 @@
         }
 
         button.deleteButton {
-            color: #A80303;
+            color: #A80303 !important;
+            
+            svg {
+                color: #A80303 !important;
+            }
 
             &:hover {
                 background-color: #D49F9F;

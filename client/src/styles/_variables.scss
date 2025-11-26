@@ -22,6 +22,20 @@ $second-text-hover-color: #A6A6A6A6;
   --button-text-color: #{$button-text-color};
 }
 
+.dark-theme {
+  --background-color: #1A1A1A;
+  --background-card-color: #2A2A2A;
+  --background-second-card-color: #3A3A3A;
+  --background-card-hover-color: #4A4A4A;
+  --main-color: #0C7B1D;
+  --main-hover-color: #459A52;
+  --text-color: #FFFFFF;
+  --second-text-color: #818181;
+  --second-text-hover-color: #A6A6A6A6;
+  --button-text-color: #FFFFFF;
+}
+
+
 $background-color: var(--background-color);
 $background-card-color: var(--background-card-color);
 $background-second-card-color: var(--background-second-card-color);

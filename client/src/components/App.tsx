@@ -7,8 +7,16 @@ import { HomePage } from "../pages/HomePage";
 import { NotFoundPage } from "../pages/NotFoundPage";
 import { BoardPage } from "../pages/BoardPage";
 import { EditProfilePage } from "../pages/EditProfilePage";
+import { useEffect } from "react";
 
 export default function App() {
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+      document.documentElement.classList.add("dark-theme");
+    }
+  }, []);
+
   return (
     <Routes>
       <Route element={<AuthLayout />}>
